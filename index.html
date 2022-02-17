@@ -14,18 +14,96 @@
 <body>
     
 
-    <div class="quizz-creation">
-        <div class="basic-info hidden">
+    <div class="quizz-creation hidden">
+        <div class="basic-info creation-layout">
             <h3>Comece pelo começo</h3>
-            <ul class="basic-info-inputs">
+            <ul class="basic-info-box inputs-layout creation-content-layout">
                 <li><input type="text" placeholder="Título do seu quizz"></li>
                 <li><input type="text" placeholder="URL da imagem do seu quizz"></li>
                 <li><input type="text" placeholder="Quantidade de perguntas do quizz"></li>
                 <li><input type="text" placeholder="Quantidade de níveis do quizz"></li>
             </ul>
             <button type="button" class="creation-button">Prosseguir pra criar perguntas</button>
+        </div>
+
+        <div class="questions creation-layout hidden">
+            <h3>Crie suas perguntas</h3>
+            <div class="creation-content-layout">    
+                <div class="inputs-box">
+                    <h3>Pergunta 1</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Texto da pergunta"></li>
+                        <li><input type="text" placeholder="Cor de fundo da pergunta"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <h3>Resposta correta</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta correta"></li>
+                        <li><input type="text" placeholder="URL da imagem"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <h3>Respostas Incorretas</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta incorreta 1"></li>
+                        <li><input type="text" placeholder="URL da imagem 1"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta incorreta 2"></li>
+                        <li><input type="text" placeholder="URL da imagem 2"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta incorreta 3"></li>
+                        <li><input type="text" placeholder="URL da imagem 3"></li>                    
+                    </ul>
+                </div>         
+
+            </div>
+            <div class="creation-content-layout closed-inputs-box">  
+                <h3>Pergunta 2</h3>
+            </div>
+            <div class="creation-content-layout closed-inputs-box">     
+                <h3>Pergunta 3</h3>
+            </div>
+            
+            <button type="button" class="creation-button">Prosseguir pra criar níveis</button>
         </div>        
-        
+
+        <div class="creation-layout hidden">
+            <h3>Agora, decida os níveis!</h3>
+            <div class="creation-content-layout">
+                <div class="inputs-box">
+                    <h3>Nível 1</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Título do nível"></li>
+                        <li><input type="text" placeholder="% de acerto mínima"></li>
+                        <li><input type="text" placeholder="URL da imagem do nível"></li>
+                        <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível"></textarea></li>                  
+                    </ul>
+                </div> 
+            </div>
+            <div class="creation-content-layout closed-inputs-box">  
+                <h3>Nível 2</h3>
+            </div>
+            <div class="creation-content-layout closed-inputs-box">     
+                <h3>Nível 3</h3>
+            </div>
+            <button type="button" class="creation-button">Finalizar Quizz</button>
+        </div>
+
+        <div class="creation-layout hidden">
+            <h3>Seu quizz está pronto!</h3>
+            <div class="img-creation-degrade">
+                <span class="img-text">Quizz Title</span>
+            </div>            
+            <button type="button" class="creation-button">Finalizar Quizz</button>
+            <span class="back-home">Voltar pra home</span>    
+        </div>       
     </div>
 
 
