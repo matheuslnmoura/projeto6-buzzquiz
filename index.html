@@ -22,7 +22,7 @@
     </header>
 
     <div class="site-container">
-        <div class="start-screen">
+        <div class="start-screen ">
             <div class="create-quizz-container">
                 <p>Você não criou nenhum quizz ainda :(</p>
                 <button>Criar Quizz</button>
@@ -77,7 +77,7 @@
     
 
     <div class="quizz-creation hidden">
-        <div class="basic-info creation-layout">
+        <div class="basic-info creation-layout hidden">
             <h3>Comece pelo começo</h3>
             <ul class="basic-info-box inputs-layout creation-content-layout">
                 <li><input type="text" placeholder="Título do seu quizz"></li>
@@ -88,52 +88,118 @@
             <button type="button" class="creation-button">Prosseguir pra criar perguntas</button>
         </div>
 
-        <div class="questions creation-layout hidden">
+        <div class="questions creation-layout">
             <h3>Crie suas perguntas</h3>
             <div class="creation-content-layout">    
                 <div class="inputs-box">
                     <h3>Pergunta 1</h3>
                     <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Texto da pergunta"></li>
-                        <li><input type="text" placeholder="Cor de fundo da pergunta"></li>                    
+                        <li><input type="text" placeholder="Texto da pergunta" class="question-text1"></li>
+                        <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg1"></li>                    
                     </ul>
                 </div> 
                 <div class="inputs-box">
                     <h3>Resposta correta</h3>
                     <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta correta"></li>
-                        <li><input type="text" placeholder="URL da imagem"></li>                    
+                        <li><input type="text" placeholder="Resposta correta" class="question-correct-answer1"></li>
+                        <li><input type="text" placeholder="URL da imagem" class="question-img-url1"></li>                    
                     </ul>
                 </div> 
                 <div class="inputs-box">
                     <h3>Respostas Incorretas</h3>
                     <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta incorreta 1"></li>
-                        <li><input type="text" placeholder="URL da imagem 1"></li>                    
+                        <li><input type="text" placeholder="Resposta incorreta 1" class="question-incorrect-answer1"></li>
+                        <li><input type="text" placeholder="URL da imagem 1" class="question-img-url1"></li>                    
                     </ul>
                 </div> 
                 <div class="inputs-box">
                     <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta incorreta 2"></li>
-                        <li><input type="text" placeholder="URL da imagem 2"></li>                    
+                        <li><input type="text" placeholder="Resposta incorreta 2" class="question-incorrect-answer1"></li>
+                        <li><input type="text" placeholder="URL da imagem 2" class="question-img-url1"></li>                    
                     </ul>
                 </div> 
                 <div class="inputs-box">
                     <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta incorreta 3"></li>
-                        <li><input type="text" placeholder="URL da imagem 3"></li>                    
+                        <li><input type="text" placeholder="Resposta incorreta 3" class="question-incorrect-answer1"></li>
+                        <li><input type="text" placeholder="URL da imagem 3" class="question-img-url1"></li>                    
                     </ul>
                 </div>         
 
             </div>
-            <div class="creation-content-layout closed-inputs-box">  
-                <h3>Pergunta 2</h3>
+            <div class="creation-content-layout">    
+                <div class="inputs-box">
+                    <h3>Pergunta 2</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Texto da pergunta" class="question-text2"></li>
+                        <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg2"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <h3>Resposta correta</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta correta" class="question-correct-answer2"></li>
+                        <li><input type="text" placeholder="URL da imagem" class="question-img-url2"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <h3>Respostas Incorretas</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta incorreta 1" class="question-incorrect-answer2"></li>
+                        <li><input type="text" placeholder="URL da imagem 1" class="question-img-url2"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta incorreta 2" class="question-incorrect-answer2"></li>
+                        <li><input type="text" placeholder="URL da imagem 2" class="question-img-url2"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta incorreta 3" class="question-incorrect-answer2"></li>
+                        <li><input type="text" placeholder="URL da imagem 3" class="question-img-url2"></li>                    
+                    </ul>
+                </div>         
+
             </div>
-            <div class="creation-content-layout closed-inputs-box">     
-                <h3>Pergunta 3</h3>
-            </div>
+            <div class="creation-content-layout">    
+                <div class="inputs-box">
+                    <h3>Pergunta 3</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Texto da pergunta" class="question-text3"></li>
+                        <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg3"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <h3>Resposta correta</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta correta" class="question-correct-answer3"></li>
+                        <li><input type="text" placeholder="URL da imagem" class="question-img-url3"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <h3>Respostas Incorretas</h3>
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta incorreta 1" class="question-incorrect-answer3"></li>
+                        <li><input type="text" placeholder="URL da imagem 1" class="question-img-url3"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta incorreta 2" class="question-incorrect-answer3"></li>
+                        <li><input type="text" placeholder="URL da imagem 2" class="question-img-url3"></li>                    
+                    </ul>
+                </div> 
+                <div class="inputs-box">
+                    <ul class="inputs-layout">
+                        <li><input type="text" placeholder="Resposta incorreta 3" class="question-incorrect-answer3"></li>
+                        <li><input type="text" placeholder="URL da imagem 3" class="question-img-url3"></li>                    
+                    </ul>
+                </div>         
+
+            </div>   
             
-            <button type="button" class="creation-button">Prosseguir pra criar níveis</button>
+            <button type="button" class="creation-button" onclick="storeQuestions()">Prosseguir pra criar níveis</button>
         </div>        
 
         <div class="creation-layout hidden">
@@ -171,6 +237,7 @@
 
     <!-- scripts -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="assets/scripts/quizzcreation.js"></script>
     
 </body>
 </html>
