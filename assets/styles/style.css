@@ -239,7 +239,7 @@ header h1 {
 .quizz-creation{
     background: var(--gray-background);   
     width: 100vw;
-    min-height: 100vh;;
+    min-height: 100vh;
 }
 
 .creation-layout{
@@ -318,6 +318,7 @@ header h1 {
 }
 
 textarea{
+    font-family: 'Roboto', sans-serif;
     width: 90vw;
     background: #FFFFFF;
     border: 1px solid #D1D1D1;
@@ -333,6 +334,7 @@ textarea::placeholder{
     font-style: italic;
     font-weight: normal;
     color: #BABABA;
+
 }
 
 .img-creation-degrade{
