@@ -11,6 +11,10 @@ html {
     --white-background: #FFFFFF;
     --white-font: #FFFFFF;
     --black-font: #000000;
+    --wrong-font: #FF0B0B;
+    --right-font: #009C22;
+    --answers-transition: all ease .6s;
+    --site-display-transition: all ease .6s;
 }
 
 
@@ -36,7 +40,7 @@ header h1 {
 
 .start-screen {
     opacity: 1;
-    transition: all ease .6s;
+    transition: var(--site-display-transition);
 }
 
 .site-container {
@@ -201,9 +205,9 @@ header h1 {
 .question .options .option {
     width: 48%;
     margin-bottom: 12px;
-
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;   
+    transition: var(--answers-transition)
 }
 
 .question .options .option img {
@@ -380,4 +384,16 @@ textarea::placeholder{
 
 .full-opacity {
     opacity: 1;
+}
+
+.mid-opacity {
+    opacity: .3;
+}
+
+.right-answer {
+    color: var(--right-font)
+}
+
+.wrong-answer {
+    color: var(--wrong-font)
 }
