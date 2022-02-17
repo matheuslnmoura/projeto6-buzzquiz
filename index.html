@@ -220,7 +220,7 @@
             <button type="button" class="creation-button">Prosseguir pra criar perguntas</button>
         </div>
 
-        <div class="questions creation-layout">
+        <div class="questions-info creation-layout hidden">
             <h3>Crie suas perguntas</h3>
             <div class="creation-content-layout">    
                 <div class="inputs-box">
@@ -257,106 +257,40 @@
                     </ul>
                 </div>         
 
-            </div>
-            <div class="creation-content-layout">    
-                <div class="inputs-box">
-                    <h3>Pergunta 2</h3>
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Texto da pergunta" class="question-text2"></li>
-                        <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg2"></li>                    
-                    </ul>
-                </div> 
-                <div class="inputs-box">
-                    <h3>Resposta correta</h3>
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta correta" class="question-correct-answer2"></li>
-                        <li><input type="text" placeholder="URL da imagem" class="question-img-url2"></li>                    
-                    </ul>
-                </div> 
-                <div class="inputs-box">
-                    <h3>Respostas Incorretas</h3>
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta incorreta 1" class="question-incorrect-answer2"></li>
-                        <li><input type="text" placeholder="URL da imagem 1" class="question-img-url2"></li>                    
-                    </ul>
-                </div> 
-                <div class="inputs-box">
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta incorreta 2" class="question-incorrect-answer2"></li>
-                        <li><input type="text" placeholder="URL da imagem 2" class="question-img-url2"></li>                    
-                    </ul>
-                </div> 
-                <div class="inputs-box">
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta incorreta 3" class="question-incorrect-answer2"></li>
-                        <li><input type="text" placeholder="URL da imagem 3" class="question-img-url2"></li>                    
-                    </ul>
-                </div>         
-
-            </div>
-            <div class="creation-content-layout">    
-                <div class="inputs-box">
-                    <h3>Pergunta 3</h3>
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Texto da pergunta" class="question-text3"></li>
-                        <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg3"></li>                    
-                    </ul>
-                </div> 
-                <div class="inputs-box">
-                    <h3>Resposta correta</h3>
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta correta" class="question-correct-answer3"></li>
-                        <li><input type="text" placeholder="URL da imagem" class="question-img-url3"></li>                    
-                    </ul>
-                </div> 
-                <div class="inputs-box">
-                    <h3>Respostas Incorretas</h3>
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta incorreta 1" class="question-incorrect-answer3"></li>
-                        <li><input type="text" placeholder="URL da imagem 1" class="question-img-url3"></li>                    
-                    </ul>
-                </div> 
-                <div class="inputs-box">
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta incorreta 2" class="question-incorrect-answer3"></li>
-                        <li><input type="text" placeholder="URL da imagem 2" class="question-img-url3"></li>                    
-                    </ul>
-                </div> 
-                <div class="inputs-box">
-                    <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Resposta incorreta 3" class="question-incorrect-answer3"></li>
-                        <li><input type="text" placeholder="URL da imagem 3" class="question-img-url3"></li>                    
-                    </ul>
-                </div>         
-
-            </div>   
+            </div>            
             
             <button type="button" class="creation-button" onclick="storeQuestions()">Prosseguir pra criar níveis</button>
         </div>        
 
-        <div class="creation-layout hidden">
+        <div class="levels-info creation-layout">
             <h3>Agora, decida os níveis!</h3>
             <div class="creation-content-layout">
                 <div class="inputs-box">
                     <h3>Nível 1</h3>
                     <ul class="inputs-layout">
-                        <li><input type="text" placeholder="Título do nível"></li>
-                        <li><input type="text" placeholder="% de acerto mínima"></li>
-                        <li><input type="text" placeholder="URL da imagem do nível"></li>
-                        <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível"></textarea></li>                  
+                        <li><input type="text" placeholder="Título do nível" class="level-title1"></li>
+                        <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit1"></li>
+                        <li><input type="text" placeholder="URL da imagem do nível" class="url-level1"></li>
+                        <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível" class="level-description1"></textarea></li>                  
                     </ul>
                 </div> 
             </div>
-            <div class="creation-content-layout closed-inputs-box">  
+            <div class="creation-content-layout">  
                 <h3>Nível 2</h3>
+                <ul class="inputs-layout">
+                    <li><input type="text" placeholder="Título do nível" class="level-title2"></li>
+                    <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit2"></li>
+                    <li><input type="text" placeholder="URL da imagem do nível" class="url-level2"></li>
+                    <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível" class="level-description2"></textarea></li>                  
+                </ul>
             </div>
             <div class="creation-content-layout closed-inputs-box">     
                 <h3>Nível 3</h3>
             </div>
-            <button type="button" class="creation-button">Finalizar Quizz</button>
+            <button type="button" class="creation-button" onclick="storeLevels()">Finalizar Quizz</button>
         </div>
 
-        <div class="creation-layout hidden">
+        <div class="creation-success creation-layout hidden">
             <h3>Seu quizz está pronto!</h3>
             <div class="img-creation-degrade">
                 <span class="img-text">Quizz Title</span>
