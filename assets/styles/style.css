@@ -25,6 +25,7 @@ header {
     align-items: center;
     position: fixed;
     top: 0;
+    z-index: 3;
 }
 
 header h1 {
@@ -128,13 +129,104 @@ header h1 {
 
 /*  ---------> Screen 2 Styles  <--------- */
 
+.quizz-screen {
+    width: 100%;
+    margin-top: calc(142px - 30px); /*Banner Height - site-container margin-top*/
+}
+
+.quizz-screen .banner {
+    width: 100vw;
+    height: 142px;
+    position: absolute;
+    left: 0;
+    top: 63px;
+    background-image: url('../media/Rectangle\ 34.svg');
+    background-size: cover;
+    background-position: center;
+}
+
+.quizz-screen .banner .backdrop {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100%;
+    padding: 0px 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.quizz-screen .banner p {
+    color: var(--white-font);
+    font-size: 19px;
+    line-height: 22.27px;
+    position: relative;
+    z-index: 9999;
+}
 
 
+.quizz-screen .questions-area {
+    margin-top: 24px;
+    width: 100%;
+}
+
+.question {
+    margin-bottom: 60px;
+}
+
+.question .header {
+    width: 100%;
+    height: 89px;
+    margin-bottom: 13px;
+    background-color: #434CA0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--white-font);
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.question .options {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.question .options .option {
+    width: 48%;
+    margin-bottom: 12px;
+
+    display: flex;
+    flex-direction: column;    
+}
+
+.question .options .option img {
+    width: 100%;
+    height: 30vw;
+    object-fit: cover;
+}
+
+.question .options .option figcaption {
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: left;
+}
 
 
-
-
-
+@media (min-width: 600px) {
+    .question .options .option img {
+        width: 100%;
+        height: 22vw;
+        object-fit: cover;
+    }
+}
 
 
 
