@@ -23,7 +23,7 @@
 
     <div class="site-container">
 
-        <div class="start-screen">
+        <div class="start-screen hidden">
             <div class="create-quizz-container">
                 <p>Você não criou nenhum quizz ainda :(</p>
                 <button>Criar Quizz</button>
@@ -74,7 +74,8 @@
             </div>
         </div>
 
-        <div class="quizz-screen hidden">
+
+        <div class="quizz-screen full-opacity">
             <div class="banner">
                 <div class="backdrop">
                     <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
@@ -103,7 +104,7 @@
                             <figcaption>Resposta</figcaption>
                         </figure>
 
-                                                <figure class="option">
+                        <figure class="option">
                             <img src="assets/media/Rectangle 34.svg" alt="">
                             <figcaption>Resposta</figcaption>
                         </figure>
@@ -118,22 +119,22 @@
                     </div>
 
                     <div class="options">
-                        <figure class="option">
+                        <figure class="option mid-opacity right-answer">
                             <img src="assets/media/Rectangle 34.svg" alt="">
                             <figcaption>Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta </figcaption>
                         </figure>
 
-                        <figure class="option">
+                        <figure class="option mid-opacity wrong-answer">
                             <img src="assets/media/Rectangle 34.svg" alt="">
                             <figcaption>Resposta</figcaption>
                         </figure>
 
-                        <figure class="option">
+                        <figure class="option mid-opacity wrong-answer">
                             <img src="assets/media/Rectangle 34.svg" alt="">
                             <figcaption>Resposta</figcaption>
                         </figure>
 
-                                                <figure class="option">
+                        <figure class="option wrong-answer">
                             <img src="assets/media/Rectangle 34.svg" alt="">
                             <figcaption>Resposta</figcaption>
                         </figure>
@@ -148,22 +149,22 @@
                     </div>
 
                     <div class="options">
-                        <figure class="option">
+                        <figure class="option wrong-answer mid-opacity">
                             <img src="assets/media/Rectangle 34.svg" alt="">
                             <figcaption>Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta Resposta </figcaption>
                         </figure>
 
-                        <figure class="option">
+                        <figure class="option wrong-answer mid-opacity">
                             <img src="assets/media/Rectangle 34.svg" alt="">
                             <figcaption>Resposta</figcaption>
                         </figure>
 
-                        <figure class="option">
+                        <figure class="option right-answer">
                             <img src="assets/media/Rectangle 34.svg" alt="">
                             <figcaption>Resposta</figcaption>
                         </figure>
 
-                                                <figure class="option">
+                        <figure class="option wrong-answer mid-opacity">
                             <img src="assets/media/Rectangle 34.svg" alt="">
                             <figcaption>Resposta</figcaption>
                         </figure>
@@ -232,6 +233,7 @@
 
     <!-- scripts -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="assets/scripts/start-screen-script.js"></script>
     <script src="assets/scripts/quizzcreation.js"></script>
     
 </body>
