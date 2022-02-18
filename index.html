@@ -23,7 +23,7 @@
 
     <div class="site-container">
 
-        <div class="start-screen no-opacity hidden">
+        <div class="start-screen full-opacity">
             <div class="create-quizz-container">
                 <p>Você não criou nenhum quizz ainda :(</p>
                 <button>Criar Quizz</button>
@@ -51,37 +51,19 @@
             <div class="all-quizzes-container">
                 <h3>Todos os Quizzes</h3>
                 <div class="api-quizzes">
-                    <div class="quizz-container">
-                        <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                    </div>
 
-                    <div class="quizz-container">
-                        <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                    </div>
-
-                    <div class="quizz-container">
-                        <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                    </div>
-
-                    <div class="quizz-container">
-                        <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                    </div>
-
-                    <div class="quizz-container">
-                        <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="quizz-screen full-opacity">
-            <div class="banner">
+        <div class="quizz-screen no-opacity hidden">
+            <!-- <div class="banner">
                 <div class="backdrop">
                     <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="questions-area">
+            <!-- <div class="questions-area">
                 <div class="question">
                     <div class="header">
                         Em qual animal Olho-Tonto Moody transfigurou Malfoy?
@@ -200,7 +182,7 @@
 
                     </div>
 
-                </div>
+                </div> -->
 
             </div>
         </div>
@@ -209,7 +191,7 @@
     
 
     <div class="quizz-creation hidden">
-        <div class="basic-info creation-layout hidden">
+        <div class="basic-info creation-layout">
             <h3>Comece pelo começo</h3>
             <ul class="basic-info-box inputs-layout creation-content-layout">
                 <li><input type="text" placeholder="Título do seu quizz"></li>
@@ -262,7 +244,7 @@
             <button type="button" class="creation-button" onclick="storeQuestions()">Prosseguir pra criar níveis</button>
         </div>        
 
-        <div class="levels-info creation-layout">
+        <div class="levels-info creation-layout hidden">
             <h3>Agora, decida os níveis!</h3>
             <div class="creation-content-layout">
                 <div class="inputs-box">

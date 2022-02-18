@@ -16,6 +16,9 @@ function isValidUrl(url){
     return(matchPattern.test(url));
 }
 
+// ------------------------- QUIZZ BASIC INFO ------------------------- //
+
+
 // ------------------------- QUIZZ QUESTION ------------------------- //
 
 
