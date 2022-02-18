@@ -348,13 +348,21 @@ textarea::placeholder{
 
 }
 
-.img-creation-degrade{
+.img-creation{
     position: relative;
     width: 90vw;
     height: calc(90vw/2);
     border-radius: 5px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%);
     margin-top: 29px;
+}
+
+.img-creation img{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+
 }
 
 .img-text{
@@ -364,6 +372,17 @@ textarea::placeholder{
     bottom: 22px;
     left: 17px;
     color: #FFFFFF;
+    z-index: 2;
+}
+
+.img-degrade{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%);
+    z-index: 1;
 }
 
 .back-home{

@@ -4,10 +4,17 @@ let questions = [];
 let numberOfLevels = 2;
 let levels = [];
 
+let quizz = {
+    title: "",
+    image: "",
+    questions: questions,
+    levels: levels
+}
+
 
 function isHexColor(color){    
-    const reg=/^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$/i;
-    return(reg.test(color));
+    const matchPattern=/^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$/i;
+    return(matchPattern.test(color));
     
 }
 
@@ -16,10 +23,100 @@ function isValidUrl(url){
     return(matchPattern.test(url));
 }
 
-// ------------------------- QUIZZ BASIC INFO ------------------------- //
+// ------------------------- QUIZZ BASIC INFOS ------------------------- //
+
+function storeBasicInfos(){
+    numberOfQuestions = document.querySelector(".quizz-nlevels").value;
+    numberOfQuestions = document.querySelector(".quizz-nquestions").value;
+    quizz.title = document.querySelector(".quizz-title").value;
+    quizz.image = document.querySelector(".quizz-img-url").value;
+
+    validateBasicInfos();
+}
+
+function validateBasicInfos(){
+    let isValidInfo = true;
+    if(quizz.title.length<20 || quizz.title.length > 65){
+        isValidInfo = false;
+        console.log("Invalid Quizz Title");
+    }
+    if(!isValidUrl(quizz.image)){
+        isValidInfo = false;
+        console.log("Invalid Quizz Url");
+    }
+    if(numberOfQuestions < 3){
+        isValidInfo = false;
+        console.log("Invalid Amount of Questions");
+    }
+    if(numberOfQuestions < 2){
+        isValidInfo = false;
+        console.log("Invalid Amount of Levels");
+    }
+
+    if(!isValidInfo){
+        alert("Preencha os dados corretamente");
+        quizz = {
+            title: "",
+            image: "",
+            questions: questions,
+            levels: levels
+        }
+    }
+    else{
+        changeToQuestionsScreen();
+    }
+}
+
+function changeToQuestionsScreen(){
+    const questionsScreenHTML = document.querySelector(".questions-info");
+
+    questionsScreenHTML.innerHTML = "<h3>Crie suas perguntas</h3>";
+    for(let i = 1; i<=numberOfQuestions; i++){
+        questionsScreenHTML.innerHTML += `
+        <div class="creation-content-layout"> 
+            <div class="inputs-box">
+                <h3>Pergunta ${i}</h3>
+                <ul class="inputs-layout">
+                    <li><input type="text" placeholder="Texto da pergunta" class="question-text${i}"></li>
+                    <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg${i}"></li>                    
+                </ul>
+            </div> 
+            <div class="inputs-box">
+                <h3>Resposta correta</h3>
+                <ul class="inputs-layout">
+                    <li><input type="text" placeholder="Resposta correta" class="question-correct-answer${i}"></li>
+                    <li><input type="text" placeholder="URL da imagem" class="question-img-url${i}"></li>                    
+                </ul>
+            </div>             
+        </div> 
+        `        
+    } 
+
+    const questionsHTML = document.querySelectorAll(".questions-info .creation-content-layout");
+    questionsHTML.forEach((element, index) => {
+        for(let i = 0; i<3; i++){
+            element.innerHTML += `
+            <div class="inputs-box">
+                <h3>Respostas Incorretas</h3>
+                <ul class="inputs-layout">
+                    <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer${index+1}"></li>
+                    <li><input type="text" placeholder="URL da imagem" class="question-img-url${index+1}"></li>                    
+                </ul>
+            </div>
+            `
+        }
+       
+    });
+
+    questionsScreenHTML.innerHTML += `<button type="button" class="creation-button" onclick="storeQuestions()">Finalizar Quizz</button>`;
+
+    document.querySelector(".basic-info").classList.add("hidden");
+    questionsScreenHTML.classList.remove("hidden");
+}
+    
 
 
-// ------------------------- QUIZZ QUESTION ------------------------- //
+// ------------------------- QUIZZ QUESTIONS ------------------------- //
 
 
 function getQuestionTitleValue(questionN){
@@ -109,13 +206,38 @@ function validateQuestions(){
         questions = [];
     }
     else{
-        document.querySelector(".questions-info").classList.add("hidden");
-        const levelsInfo = document.querySelector(".levels-info");
-        levelsInfo.classList.remove("hidden");
-        levelsInfo.scrollIntoView();
+        quizz.questions = questions;
+        changeToLevelsScreen();
     }
 }
 
+function changeToLevelsScreen(){
+    const levelsInfo = document.querySelector(".levels-info");
+
+    levelsInfo.innerHTML = `<h3>Agora, decida os níveis!</h3>`;
+    for(let i = 1; i <= numberOfLevels; i++){
+        levelsInfo.innerHTML += `
+        <div class="creation-content-layout">
+            <div class="inputs-box">
+                <h3>Nível ${i}</h3>
+                <ul class="inputs-layout">
+                    <li><input type="text" placeholder="Título do nível" class="level-title${i}"></li>
+                    <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit${i}"></li>
+                    <li><input type="text" placeholder="URL da imagem do nível" class="url-level${i}"></li>
+                    <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível" class="level-description${i}"></textarea></li>                  
+                </ul>
+            </div> 
+        </div>      
+        `
+    }
+
+    levelsInfo.innerHTML += `<button type="button" class="creation-button" onclick="storeLevels()">Finalizar Quizz</button>`;
+
+
+    document.querySelector(".questions-info").classList.add("hidden");
+    levelsInfo.classList.remove("hidden");
+    levelsInfo.scrollIntoView();
+}
 
 
 // ------------------------- QUIZZ LEVELS ------------------------- //
@@ -177,14 +299,48 @@ function validateLevels(){
     });
 
     if(!isValidLevel || !hasValidLevelMin){
+        alert("Preencha os dados corretamente");
         console.log("Invalid levels");
         levels = [];
     }
     else{
-        document.querySelector(".levels-info").classList.add("hidden");
-        const creationSuccessScreen = document.querySelector(".creation-success");
-        creationSuccessScreen.classList.remove("hidden");
-        creationSuccessScreen.scrollIntoView();
+        quizz.levels = levels;
+        sendQuizzToServerAPI();
+        console.log(quizz);
     }
 }
 
+function sendQuizzToServerAPI(){
+    const requisition = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes", quizz);
+    requisition.then(finalizeQuizzCreation);
+    requisition.catch( (error) => {  
+        console.log("Falha em enviar quizz pro servidor\n" + error.data);
+    })
+}
+function finalizeQuizzCreation(response){
+    const creationSuccessScreen = document.querySelector(".creation-success");
+
+    creationSuccessScreen.innerHTML = `
+    <h3>Seu quizz está pronto!</h3>
+    <div class="img-creation">
+        <img src="${quizz.image}" alt="Quizz Image">
+        <span class="img-text">${quizz.title}</span>
+        <span class="img-degrade"></span>
+    </div>            
+    <button type="button" class="creation-button" onclick="accessQuizz()">Acessar Quizz</button>
+    <span class="back-home" onclick="backHome()">Voltar pra home</span>
+    `
+
+    document.querySelector(".levels-info").classList.add("hidden");
+    creationSuccessScreen.classList.remove("hidden");
+    creationSuccessScreen.scrollIntoView();
+    console.log(response.data);
+}
+
+function accessQuizz(){
+
+}
+
+function backHome(){
+
+}
