@@ -1,5 +1,6 @@
 
 let quizzesArray=[];
+let quizzObj = [];
 
 
 let getQuizzes = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
@@ -63,7 +64,7 @@ function startQuizz(quizzId) {
 };
 
 function createQuizz(response) {
-    let quizzObj = response.data;
+    quizzObj = response.data;
 
     console.log(quizzObj.image);
 
@@ -95,18 +96,16 @@ function createQuizz(response) {
         `;
 
         let scrambledAnswers = questions[i].answers.sort(comparador);
-        console.log(scrambledAnswers);
-        for(let j = 0; j < questions[i].answers.length; j++) {
+        for(let j = 0; j < scrambledAnswers.length; j++) {
             document.querySelector(`.questions-area .question:nth-child(${i+1}) .options`).innerHTML += 
             `
-            <figure class="option" is-correct = "${questions[i].answers[j].isCorrectAnswer}">
-                <img src="${questions[i].answers[j].image}" alt="">
-                <figcaption>${questions[i].answers[j].text}</figcaption>
+            <figure class="option" is-correct = "${scrambledAnswers[j].isCorrectAnswer}">
+                <img src="${scrambledAnswers[j].image}" alt="">
+                <figcaption>${scrambledAnswers[j].text}</figcaption>
             </figure>
             `;
-        }
-    }
-
+        };
+    };
     changeScreen(".start-screen", ".quizz-screen");
 };
 
@@ -125,8 +124,48 @@ function changeScreen(hide, show) {
         setTimeout(()=>{
             document.querySelector(show).classList.remove('no-opacity');
         }, 100);
+        window.scrollTo(0, 0);
     }, 600);
+
+    selectAnswer();
+};
+
+function selectAnswer() {
+    for(let i = 0; i < quizzObj.questions.length; i++) {
+        let allAnswersToSingleQuestion = Array.from(document.querySelectorAll(`.questions-area .question:nth-child(${i+1}) .options .option`));
+    
+        allAnswersToSingleQuestion.forEach(element=>{
+            element.addEventListener("click", () =>{
+                if(!(element.classList.contains('full-opacity') || element.classList.contains('mid-opacity'))){
+                    element.classList.add('full-opacity');
+                    goToNextQuestion(i);
+
+                    allAnswersToSingleQuestion.forEach(item=>{
+                        if(!(item.classList.contains('full-opacity'))) {
+                            item.classList.add('mid-opacity');
+                        };
+                    });
+                } else {
+                    console.log('você já escolheu uma resposta');
+                };
+
+                allAnswersToSingleQuestion.forEach(checkAnswer =>{
+                    if(checkAnswer.getAttribute("is-correct") === 'true'){
+                        checkAnswer.classList.add('right-answer');
+                    } else {
+                        checkAnswer.classList.add('wrong-answer');
+                    };
+                });
+
+            });
+        });
+    };
 };
 
 
 
+function goToNextQuestion(i) {
+    setTimeout(() => {
+        document.querySelector(`.questions-area .question:nth-child(${i+2})`).scrollIntoView({block: "center", behavior: "smooth"});
+    }, 2000);
+}

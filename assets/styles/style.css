@@ -131,7 +131,7 @@ header h1 {
     }
     .api-quizzes {
         display: flex;
-        justify-content: stretch;
+        justify-content: center;
         flex-direction: row;
         flex-wrap: wrap;
     }
