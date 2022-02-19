@@ -11,6 +11,15 @@ let quizz = {
     levels: levels
 }
 
+function startQuizzCreation(){
+    document.querySelector(".site-container").classList.add("hidden");
+    document.querySelector(".quizz-creation").classList.remove("hidden");
+    
+}
+
+
+
+// ------------------------- VALIDATIONS FUNCTIONS ------------------------- //
 
 function isHexColor(color){    
     const matchPattern=/^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$/i;
@@ -108,7 +117,7 @@ function changeToQuestionsScreen(){
        
     });
 
-    questionsScreenHTML.innerHTML += `<button type="button" class="creation-button" onclick="storeQuestions()">Finalizar Quizz</button>`;
+    questionsScreenHTML.innerHTML += `<button type="button" class="creation-button" onclick="storeQuestions()">Prosseguir pra criar níveis</button>`;
 
     document.querySelector(".basic-info").classList.add("hidden");
     questionsScreenHTML.classList.remove("hidden");
@@ -169,7 +178,6 @@ function storeQuestions(){
         questions.push(obj);
     }
 
-    console.log(questions);
     validateQuestions();
 }
 
@@ -267,7 +275,6 @@ function storeLevels(){
         levels.push(obj);
     }
 
-    console.log(levels);
     validateLevels();
 }
 
@@ -306,7 +313,6 @@ function validateLevels(){
     else{
         quizz.levels = levels;
         sendQuizzToServerAPI();
-        console.log(quizz);
     }
 }
 
@@ -335,12 +341,32 @@ function finalizeQuizzCreation(response){
     creationSuccessScreen.classList.remove("hidden");
     creationSuccessScreen.scrollIntoView();
     console.log(response.data);
+    localStoreQuizz(response);
 }
 
-function accessQuizz(){
+function localStoreQuizz(response){
+    const quizzId = response.data.id;
+    let Ids = [];
 
+    if(localStorage.getItem("QuizzIDs") != null){        
+        const idsAPIDeserialized = JSON.parse(localStorage.getItem("QuizzIDs"));
+        if(!Array.isArray(idsAPIDeserialized)){
+            Ids.push(idsAPIDeserialized);
+        }
+        else{
+            Ids=idsAPIDeserialized;
+        }
+    }    
+
+    Ids.push(quizzId);
+    const idSerializeds = JSON.stringify(Ids); 
+    localStorage.setItem("QuizzIDs", idSerializeds);
+  
 }
 
 function backHome(){
-
+    document.querySelector(".site-container").classList.remove("hidden");
+    document.querySelector(".quizz-creation").classList.add("hidden");
+    document.querySelector(".basic-info").classList.remove("hidden");
+    document.querySelector(".creation-success").classList.add("hidden");
 }
