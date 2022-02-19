@@ -35,7 +35,7 @@ function isValidUrl(url){
 // ------------------------- QUIZZ BASIC INFOS ------------------------- //
 
 function storeBasicInfos(){
-    numberOfQuestions = document.querySelector(".quizz-nlevels").value;
+    numberOfLevels = document.querySelector(".quizz-nlevels").value;
     numberOfQuestions = document.querySelector(".quizz-nquestions").value;
     quizz.title = document.querySelector(".quizz-title").value;
     quizz.image = document.querySelector(".quizz-img-url").value;
@@ -80,42 +80,48 @@ function changeToQuestionsScreen(){
     const questionsScreenHTML = document.querySelector(".questions-info");
 
     questionsScreenHTML.innerHTML = "<h3>Crie suas perguntas</h3>";
-    for(let i = 1; i<=numberOfQuestions; i++){
+    questionsScreenHTML.innerHTML += `
+    <div class="creation-content-layout"> 
+        <div class="inputs-box">
+            <h3>Pergunta 1</h3>
+            <ul class="inputs-layout">
+                <li><input type="text" placeholder="Texto da pergunta" class="question-text1"></li>
+                <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg1"></li>                    
+            </ul>
+        </div> 
+        <div class="inputs-box">
+            <h3>Resposta correta</h3>
+            <ul class="inputs-layout">
+                <li><input type="text" placeholder="Resposta correta" class="question-correct-answer1"></li>
+                <li><input type="text" placeholder="URL da imagem" class="question-img-url1"></li>                    
+            </ul>
+        </div>             
+    </div> 
+    `
+
+    const questionsHTML = document.querySelector(".questions-info .creation-content-layout");
+
+    for(let i = 0; i<3; i++){
+        questionsHTML.innerHTML += `
+        <div class="inputs-box">
+            <h3>Respostas Incorretas</h3>
+            <ul class="inputs-layout">
+                <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer1"></li>
+                <li><input type="text" placeholder="URL da imagem" class="question-img-url1"></li>                    
+            </ul>
+        </div>
+        `
+    }
+    for(let i = 2; i<=numberOfQuestions; i++){
         questionsScreenHTML.innerHTML += `
-        <div class="creation-content-layout"> 
+        <div class="creation-content-layout "> 
             <div class="inputs-box">
-                <h3>Pergunta ${i}</h3>
-                <ul class="inputs-layout">
-                    <li><input type="text" placeholder="Texto da pergunta" class="question-text${i}"></li>
-                    <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg${i}"></li>                    
-                </ul>
-            </div> 
-            <div class="inputs-box">
-                <h3>Resposta correta</h3>
-                <ul class="inputs-layout">
-                    <li><input type="text" placeholder="Resposta correta" class="question-correct-answer${i}"></li>
-                    <li><input type="text" placeholder="URL da imagem" class="question-img-url${i}"></li>                    
-                </ul>
-            </div>             
+                <h3>Pergunta ${i}</h3> 
+                <ion-icon name="create-outline" class="open-box-icon" onclick="openQuestion(${i}, this)"></ion-icon>                   
+            </div>      
         </div> 
         `        
     } 
-
-    const questionsHTML = document.querySelectorAll(".questions-info .creation-content-layout");
-    questionsHTML.forEach((element, index) => {
-        for(let i = 0; i<3; i++){
-            element.innerHTML += `
-            <div class="inputs-box">
-                <h3>Respostas Incorretas</h3>
-                <ul class="inputs-layout">
-                    <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer${index+1}"></li>
-                    <li><input type="text" placeholder="URL da imagem" class="question-img-url${index+1}"></li>                    
-                </ul>
-            </div>
-            `
-        }
-       
-    });
 
     questionsScreenHTML.innerHTML += `<button type="button" class="creation-button" onclick="storeQuestions()">Prosseguir pra criar níveis</button>`;
 
@@ -123,16 +129,53 @@ function changeToQuestionsScreen(){
     questionsScreenHTML.classList.remove("hidden");
 }
     
-
+function openQuestion(questionNumber, element){
+    element.classList.add("hidden");
+    const questionBox = element.parentNode.parentNode;
+    element.parentNode.innerHTML += `
+    <ul class="inputs-layout">
+        <li><input type="text" placeholder="Texto da pergunta" class="question-text${questionNumber}"></li>
+        <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg${questionNumber}"></li>                    
+    </ul>
+    `
+    questionBox.innerHTML += `
+    <div class="inputs-box">
+        <h3>Resposta correta</h3>
+        <ul class="inputs-layout">
+            <li><input type="text" placeholder="Resposta correta" class="question-correct-answer${questionNumber}"></li>
+            <li><input type="text" placeholder="URL da imagem" class="question-img-url${questionNumber}"></li>                    
+        </ul>
+    </div>
+    `
+    for(let i = 0; i<3; i++){
+        questionBox.innerHTML += `
+        <div class="inputs-box">
+            <h3>Respostas Incorretas</h3>
+            <ul class="inputs-layout">
+                <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer${questionNumber}"></li>
+                <li><input type="text" placeholder="URL da imagem" class="question-img-url${questionNumber}"></li>                    
+            </ul>
+        </div>
+        `
+    }
+}
 
 // ------------------------- QUIZZ QUESTIONS ------------------------- //
 
 
 function getQuestionTitleValue(questionN){
-    return document.querySelector(".question-text"+questionN).value;
+    if(document.querySelector(".question-text"+questionN) != null){
+        const value = document.querySelector(".question-text"+questionN).value;
+        return value;
+    }
+    else return null;  
 }
 function getQuestionColorValue(questionN){
-    return document.querySelector(".question-color-bg"+questionN).value;     
+    if(document.querySelector(".question-color-bg"+questionN) != null){
+        const value = document.querySelector(".question-color-bg"+questionN).value;
+        return value;
+    }
+    else return null;  
 }
 function getAnswersValues(questionN){  
     let questionsCorrectsAnswers = document.querySelectorAll(".question-correct-answer"+questionN);
@@ -142,19 +185,41 @@ function getAnswersValues(questionN){
 
     for(let i = 0; i<4; i++){                                  
         let obj = null;
-        if(i===0){                                       
-            obj = {
-                text: questionsCorrectsAnswers[i].value,
-                image: questionsImgURLs[i].value,
-                isCorrectAnswer: true
-            }
+        if(questionsCorrectsAnswers[i] !=null && questionsImgURLs[i] !=null){
+
         }
-        else{            
-            obj = {
-                text: questionsIncorrectsAnswers[i-1].value,
-                image: questionsImgURLs[i].value,
-                isCorrectAnswer: false
+        if(i===0){ 
+            if(questionsCorrectsAnswers[i] !=null && questionsImgURLs[i] !=null){
+                obj = {
+                    text: questionsCorrectsAnswers[i].value,
+                    image: questionsImgURLs[i].value,
+                    isCorrectAnswer: true
+                }
             }
+            else{
+                obj = {
+                    text: null,
+                    image: null,
+                    isCorrectAnswer: true
+                }
+            }                               
+            
+        }
+        else{  
+            if(questionsIncorrectsAnswers[i-1] !=null && questionsImgURLs[i] !=null){
+                obj = {
+                    text: questionsIncorrectsAnswers[i-1].value,
+                    image: questionsImgURLs[i].value,
+                    isCorrectAnswer: false
+                }
+            }
+            else{
+                obj = {
+                    text: null,
+                    image: null,
+                    isCorrectAnswer: false
+                }
+            }    
         }     
 
         if(i===0){
@@ -185,28 +250,51 @@ function validateQuestions(){
     let isValidQuestion = true;
     
     questions.forEach((element) => {
-        if(element.title.length < 20){
+        if(element.title == null){
             isValidQuestion = false;
             console.log("Invalid title question");
         }
-        if(!isHexColor(element.color)){
+        else if(element.title.length < 20){
+            isValidQuestion = false;
+            console.log("Invalid title question");
+        }
+        if(element.color == null){
             isValidQuestion = false;
             console.log("Invalid hex color");
         }
-        if(element.answers.length<2){
+        else if(!isHexColor(element.color)){
+            isValidQuestion = false;
+            console.log("Invalid hex color");
+        }
+        if(element.answers == null){
             isValidQuestion = false;
             console.log("Invalid amount of answers");
         }
-        element.answers.forEach((elementAnswer) => {
-            if(elementAnswer.text.length===0){
-                isValidQuestion = false;
-                console.log("Invalid text question");
-            }
-            if(!isValidUrl(elementAnswer.image)){
-                isValidQuestion = false;
-                console.log("Invalid url question");
-            }
-        });
+        else if(element.answers.length<2){
+            isValidQuestion = false;
+            console.log("Invalid amount of answers");
+        }
+        else{
+            element.answers.forEach((elementAnswer) => {
+                if(elementAnswer.text == null){
+                    isValidQuestion = false;
+                    console.log("Invalid text question");
+                }
+                else if(elementAnswer.text.length===0){
+                    isValidQuestion = false;
+                    console.log("Invalid text question");
+                }
+                if(elementAnswer.image == null){
+                    isValidQuestion = false;
+                    console.log("Invalid url question");
+                }
+                else if(!isValidUrl(elementAnswer.image)){
+                    isValidQuestion = false;
+                    console.log("Invalid url question");
+                }
+            });
+        }
+        
     })    
 
     if(!isValidQuestion){
@@ -223,17 +311,27 @@ function changeToLevelsScreen(){
     const levelsInfo = document.querySelector(".levels-info");
 
     levelsInfo.innerHTML = `<h3>Agora, decida os níveis!</h3>`;
-    for(let i = 1; i <= numberOfLevels; i++){
+
+    levelsInfo.innerHTML += `
+    <div class="creation-content-layout">
+        <div class="inputs-box">
+            <h3>Nível 1</h3>
+            <ul class="inputs-layout">
+                <li><input type="text" placeholder="Título do nível" class="level-title1"></li>
+                <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit1"></li>
+                <li><input type="text" placeholder="URL da imagem do nível" class="url-level1"></li>
+                <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível" class="level-description1"></textarea></li>                  
+            </ul>
+        </div> 
+    </div>      
+    `
+
+    for(let i = 2; i <= numberOfLevels; i++){
         levelsInfo.innerHTML += `
         <div class="creation-content-layout">
             <div class="inputs-box">
                 <h3>Nível ${i}</h3>
-                <ul class="inputs-layout">
-                    <li><input type="text" placeholder="Título do nível" class="level-title${i}"></li>
-                    <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit${i}"></li>
-                    <li><input type="text" placeholder="URL da imagem do nível" class="url-level${i}"></li>
-                    <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível" class="level-description${i}"></textarea></li>                  
-                </ul>
+                <ion-icon name="create-outline" class="open-box-icon" onclick="openLevel(${i}, this)"></ion-icon>
             </div> 
         </div>      
         `
@@ -247,20 +345,45 @@ function changeToLevelsScreen(){
     levelsInfo.scrollIntoView();
 }
 
+function openLevel(questionNumber, element){
+    element.classList.add("hidden");
+    const levelBox = element.parentNode.parentNode;
+    element.parentNode.innerHTML += `
+    <ul class="inputs-layout">
+        <li><input type="text" placeholder="Título do nível" class="level-title${questionNumber}"></li>
+        <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit${questionNumber}"></li>
+        <li><input type="text" placeholder="URL da imagem do nível" class="url-level${questionNumber}"></li>
+        <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível" class="level-description${questionNumber}"></textarea></li>                  
+    </ul>
+    `    
+}
+
 
 // ------------------------- QUIZZ LEVELS ------------------------- //
 
 function getLevelTitleValue(levelN){
-    return document.querySelector(".level-title"+levelN).value;
+    if(document.querySelector(".level-title"+levelN) != null){
+        return document.querySelector(".level-title"+levelN).value;
+    }
+    else return null;    
 }
 function getLevelImgUrl(levelN){
-    return document.querySelector(".url-level"+levelN).value;
+    if(document.querySelector(".url-level"+levelN) != null){
+        return document.querySelector(".url-level"+levelN).value;
+    }
+    else return null;   
 }
 function getLevelMinValue(levelN){
-    return parseInt(document.querySelector(".minimum-hit" + levelN).value);
+    if(document.querySelector(".minimum-hit" + levelN) != null){
+        return parseInt(document.querySelector(".minimum-hit" + levelN).value);
+    }
+    else return null;   
 }
 function getLevelDescription(levelN){
-    return document.querySelector(".level-description" + levelN).value;
+    if(document.querySelector(".level-description" + levelN) != null){
+        return document.querySelector(".level-description" + levelN).value;
+    }
+    else return null;   
 }
 
 
@@ -283,23 +406,42 @@ function validateLevels(){
     hasValidLevelMin = false;
 
     levels.forEach((element) => {
-        if(element.title.length < 10){
+        if(element.title == null){
             isValidLevel = false;
             console.log("Invalid level title");
         }
-        if(element.minValue < 0 || element.minValue > 100){
+        else if(element.title.length < 10){
+            isValidLevel = false;
+            console.log("Invalid level title");
+        }
+        if(element.minValue == null){
             isValidLevel = false;
             console.log("Invalid min value");
         }
-        if(element.minValue === 0){
-            hasValidLevelMin = true;
-            console.log("Has min value = 0");
+        else if(element.minValue < 0 || element.minValue > 100){
+            isValidLevel = false;
+            console.log("Invalid min value");
         }
-        if(!isValidUrl(element.image)){
+        else{
+            if(element.minValue === 0){
+                hasValidLevelMin = true;
+                console.log("Has min value = 0");
+            }
+        }
+        
+        if(element.image == null){
             isValidLevel = false;
             console.log("Invalid url");
         }
-        if(element.text.length<30){
+        else if(!isValidUrl(element.image)){
+            isValidLevel = false;
+            console.log("Invalid url");
+        }
+        if(element.text ==null){
+            isValidLevel = false;
+            console.log("Invalid description");
+        }
+        else if(element.text.length<30){
             isValidLevel = false;
             console.log("Invalid description");
         }        
