@@ -333,7 +333,7 @@ function finalizeQuizzCreation(response){
         <span class="img-text">${quizz.title}</span>
         <span class="img-degrade"></span>
     </div>            
-    <button type="button" class="creation-button" onclick="accessQuizz()">Acessar Quizz</button>
+    <button type="button" class="creation-button" onclick="startQuizzCreated(${response.data.id})">Acessar Quizz</button>
     <span class="back-home" onclick="backHome()">Voltar pra home</span>
     `
 
