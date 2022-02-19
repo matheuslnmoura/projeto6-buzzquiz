@@ -11,6 +11,11 @@ let quizz = {
     levels: levels
 }
 
+let Ids = [];
+
+let userQuizzesArr = [];
+let userQuizzFromAPI = null;
+
 function startQuizzCreation(){
     document.querySelector(".site-container").classList.add("hidden");
     document.querySelector(".quizz-creation").classList.remove("hidden");
@@ -345,8 +350,10 @@ function finalizeQuizzCreation(response){
 }
 
 function localStoreQuizz(response){
+    userQuizzFromAPI = (response.data);
+    userQuizzesArr.push(userQuizzFromAPI);
     const quizzId = response.data.id;
-    let Ids = [];
+    
 
     if(localStorage.getItem("QuizzIDs") != null){        
         const idsAPIDeserialized = JSON.parse(localStorage.getItem("QuizzIDs"));
@@ -361,7 +368,10 @@ function localStoreQuizz(response){
     Ids.push(quizzId);
     const idSerializeds = JSON.stringify(Ids); 
     localStorage.setItem("QuizzIDs", idSerializeds);
-  
+    localStorage.setItem("userQuizzObj", userQuizzFromAPI);
+    localStorage.setItem("userQuizzArr", userQuizzesArr);
+    console.log(quizzId);
+    console.log("ids criados" + Ids);
 }
 
 function backHome(){

@@ -1,43 +1,84 @@
 
 let quizzesArray=[];
+let userQuizzesArray=[];
 let quizzObj = [];
 let correctAnswers = 0;
 let wrongAnswers = 0;
+let quizzIdentification = null;
+let userQuizzesID = [];
 
 
 let getQuizzes = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
-getQuizzes.then(renderQuizzesList);
+getQuizzes.then(renderQuizzesList, renderUserQuizzesList);
 getQuizzes.catch(quizzesListError);
-
 
 
 function renderQuizzesList(response) {
     let quizzesObj = response.data;
     quizzesObj.forEach(element => {
-        if(isValidUrl(element.image)) {
-            document.querySelector('.all-quizzes-container .api-quizzes').innerHTML += 
-            `
-                <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(${element.image});">
+        if (element.id !== userQuizzesID){
+            if(isValidUrl(element.image)) {
+                document.querySelector('.all-quizzes-container .api-quizzes').innerHTML += 
+                `
+                    <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(${element.image});">
+                        <div class="backdrop">
+                            <p>${element.title}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                document.querySelector('.all-quizzes-container .api-quizzes').innerHTML += 
+                `
+                <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(https://http.cat/404.jpg);">
                     <div class="backdrop">
                         <p>${element.title}</p>
                     </div>
                 </div>
-            `;
-        } else {
-            document.querySelector('.all-quizzes-container .api-quizzes').innerHTML += 
-            `
-            <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(https://http.cat/404.jpg);">
-                <div class="backdrop">
-                    <p>${element.title}</p>
-                </div>
-            </div>
-            `;
-        }
-
+                `;
+            };
+        } 
     });
-
-    quizzesClickEvent();
+    renderUserQuizzesList(response);
+    allQuizzesClickEvent();
 };
+
+function renderUserQuizzesList(response) {
+    let quizzesObj = response.data;
+    if(localStorage.getItem("QuizzIDs") != null) {
+        userQuizzesID = JSON.parse(localStorage.getItem("QuizzIDs"));
+        userQuizzesID.forEach(element => {
+            quizzesObj.forEach(item => {
+                if(element === item.id) {
+                    if(isValidUrl(item.image)) {
+                        document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
+                        `
+                            <div class="quizz-container" quizz-id="${item.id}" style="background-image: url(${item.image});">
+                                <div class="backdrop">
+                                    <p>${item.title}</p>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
+                        `
+                        <div class="quizz-container" quizz-id="${item.id}" style="background-image: url(https://http.cat/404.jpg);">
+                            <div class="backdrop">
+                                <p>${item.title}</p>
+                            </div>
+                        </div>
+                        `;
+                    };
+                };
+            });
+        });
+
+        document.querySelector('.create-quizz-container').classList.add('hidden');
+        document.querySelector('.user-quizzes').classList.remove('no-opacity');
+        document.querySelector('.user-quizzes').classList.add('full-opacity');
+        document.querySelector('.user-quizzes').classList.remove('hidden');
+    }; 
+    userQuizzesClickEvent();
+}
 
 function quizzesListError(error) {
     console.log(error);
@@ -48,13 +89,22 @@ function isValidUrl(url){
     return(matchPattern.test(url));
 };
 
-function quizzesClickEvent() {
+function allQuizzesClickEvent() {
     quizzesArray = Array.from(document.querySelectorAll('.all-quizzes-container .api-quizzes .quizz-container'));
     quizzesArray.forEach(element => {
         element.addEventListener("click", ()=>{
             let quizzId = element.getAttribute("quizz-id");
             startQuizz(quizzId);
-            
+        })
+    });
+};
+
+function userQuizzesClickEvent() {
+    userQuizzesArray = Array.from(document.querySelectorAll('.user-quizzes .api-quizzes .quizz-container'));
+    userQuizzesArray.forEach(element => {
+        element.addEventListener("click", ()=>{
+            let quizzId = element.getAttribute("quizz-id");
+            startQuizz(quizzId);
         })
     });
 };
@@ -62,12 +112,11 @@ function quizzesClickEvent() {
 function startQuizz(quizzId) {
     let getQuizz = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${quizzId}`);
     getQuizz.then(createQuizz);
+    quizzIdentification = quizzId
 };
 
 function createQuizz(response) {
     quizzObj = response.data;
-
-    console.log(quizzObj.image);
 
     document.querySelector('.quizz-screen').innerHTML = 
     `
@@ -116,6 +165,25 @@ function getQuestions() {
         };
     };
     changeScreen(".start-screen", ".quizz-screen");
+    selectAnswer();
+};
+
+function comparador() { 
+	return Math.random() - 0.5; 
+};
+
+function changeScreen(hide, show) {
+    document.querySelector(hide).classList.remove('full-opacity');
+    document.querySelector(hide).classList.add('no-opacity');
+    setTimeout(()=>{
+        document.querySelector(hide).classList.add('hidden');
+
+        document.querySelector(show).classList.remove('hidden');
+        setTimeout(()=>{
+            document.querySelector(show).classList.remove('no-opacity');
+        }, 100);
+        window.scrollTo(0, 0);
+    }, 600);
 };
 
 function selectAnswer() {
@@ -126,10 +194,8 @@ function selectAnswer() {
             element.addEventListener("click", () =>{
                 if(element.getAttribute("is-correct") === 'true'){
                     correctAnswers++;
-                    console.log("Respostas Certas" + correctAnswers);
                 } else {
                     wrongAnswers++;
-                    console.log("Respostas Erradas" + wrongAnswers);
                 }
 
                 if(!(element.classList.contains('full-opacity') || element.classList.contains('mid-opacity'))){
@@ -142,7 +208,6 @@ function selectAnswer() {
                         };
                     });
                 } else {
-                    console.log('você já escolheu uma resposta');
                 };
 
                 allAnswersToSingleQuestion.forEach(checkAnswer =>{
@@ -161,7 +226,6 @@ function goToNext(i) {
     if(correctAnswers + wrongAnswers === quizzObj.questions.length) {
         getLevels();
         setTimeout(() => {
-            console.log('cabou as perguntas porra');
             document.querySelector(`.level`).scrollIntoView({block: "center", behavior: "smooth"});
         }, 2000);
     } else if(document.querySelector(`.questions-area .question:nth-child(${i+2})`) !== null){
@@ -196,31 +260,40 @@ function getLevels() {
                     <p>${quizzLevels[i].text}</p>
                 </div>
             </div>
+            <div class="quizz-finalization">
+                <button class="restart-quizz">Reiniciar Quizz</button>
+                <button class="go-to-home">Voltar pra home</button>
+            </div>
             `;
         }
     };
+    document.querySelector('.quizz-finalization .restart-quizz').addEventListener('click', restartQuizz)
+    document.querySelector('.quizz-finalization .go-to-home').addEventListener('click', goToHome)
+
 };
 
-function comparador() { 
-	return Math.random() - 0.5; 
+function restartQuizz() {
+    correctAnswers = 0;
+    wrongAnswers = 0;
+    document.querySelector('.questions-area').innerHTML = "";
+    getQuestions();
+    window.scrollTo({top: -100, behavior: "smooth"});
+    document.querySelector('.level-area').innerHTML ="";
 };
 
-
-function changeScreen(hide, show) {
-    document.querySelector(hide).classList.remove('full-opacity');
-    document.querySelector(hide).classList.add('no-opacity');
+function goToHome() {
+    changeScreen(".quizz-screen", ".start-screen");
     setTimeout(()=>{
-        document.querySelector(hide).classList.add('hidden');
+        quizzesArray=[];
+        quizzObj = [];
+        quizzIdentification = null;
+        correctAnswers = 0;
+        wrongAnswers = 0;
+        document.querySelector('.questions-area').innerHTML = "";
+        document.querySelector('.level-area').innerHTML ="";
+    }, 1000);
+}
 
-        document.querySelector(show).classList.remove('hidden');
-        setTimeout(()=>{
-            document.querySelector(show).classList.remove('no-opacity');
-        }, 100);
-        window.scrollTo(0, 0);
-    }, 600);
-
-    selectAnswer();
-};
 
 
 
