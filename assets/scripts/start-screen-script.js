@@ -1,13 +1,15 @@
 
 let quizzesArray=[];
 let quizzObj = [];
+let correctAnswers = 0;
+let wrongAnswers = 0;
 
 
 let getQuizzes = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
 getQuizzes.then(renderQuizzesList);
 getQuizzes.catch(quizzesListError);
 
-// quizzId="${element.id}" style="background-image: url(${element.image});"
+
 
 function renderQuizzesList(response) {
     let quizzesObj = response.data;
@@ -31,7 +33,6 @@ function renderQuizzesList(response) {
             </div>
             `;
         }
-
 
     });
 
@@ -77,11 +78,19 @@ function createQuizz(response) {
     </div>
     <div class="questions-area">
     </div>
+
+    <div class="level-area">
+    </div>
+
     `;
 
-    let questions = quizzObj.questions; 
+    getQuestions();
+};
 
-    for(let i = 0; i < questions.length; i++) {
+function getQuestions() {
+    let questions = quizzObj.questions; 
+    let i;
+    for(i = 0; i < questions.length; i++) {
         document.querySelector('.questions-area').innerHTML += 
         `
         <div class="question">
@@ -109,9 +118,92 @@ function createQuizz(response) {
     changeScreen(".start-screen", ".quizz-screen");
 };
 
+function selectAnswer() {
+    for(let i = 0; i < quizzObj.questions.length; i++) {
+        let allAnswersToSingleQuestion = Array.from(document.querySelectorAll(`.questions-area .question:nth-child(${i+1}) .options .option`));
+    
+        allAnswersToSingleQuestion.forEach(element=>{
+            element.addEventListener("click", () =>{
+                if(element.getAttribute("is-correct") === 'true'){
+                    correctAnswers++;
+                    console.log("Respostas Certas" + correctAnswers);
+                } else {
+                    wrongAnswers++;
+                    console.log("Respostas Erradas" + wrongAnswers);
+                }
+
+                if(!(element.classList.contains('full-opacity') || element.classList.contains('mid-opacity'))){
+                    element.classList.add('full-opacity');
+                    goToNext(i);
+
+                    allAnswersToSingleQuestion.forEach(item=>{
+                        if(!(item.classList.contains('full-opacity'))) {
+                            item.classList.add('mid-opacity');
+                        };
+                    });
+                } else {
+                    console.log('você já escolheu uma resposta');
+                };
+
+                allAnswersToSingleQuestion.forEach(checkAnswer =>{
+                    if(checkAnswer.getAttribute("is-correct") === 'true'){
+                        checkAnswer.classList.add('right-answer');
+                    } else {
+                        checkAnswer.classList.add('wrong-answer');
+                    };
+                });
+            });
+        });
+    };
+};
+
+function goToNext(i) {
+    if(document.querySelector(`.questions-area .question:nth-child(${i+2})`) !== null){
+        // document.querySelector(`.questions-area .question:nth-child(${i+2})`).classList.toggle('hidden');
+        setTimeout(() => {
+            document.querySelector(`.questions-area .question:nth-child(${i+2})`).scrollIntoView({block: "center", behavior: "smooth"});
+        }, 2000);
+    } else if (correctAnswers + wrongAnswers === quizzObj.questions.length) {
+        getLevels();
+        setTimeout(() => {
+            console.log('cabou as perguntas porra');
+            document.querySelector(`.level`).scrollIntoView({block: "center", behavior: "smooth"});
+        }, 2000);
+    } else {
+        setTimeout(() => {
+            alert('Responda todas as perguntas para finalizar o teste');
+        }, 2000);
+    };
+};
+
+function getLevels() {
+    let quizzLevels = quizzObj.levels;
+    let correctAnswersPercentage = (correctAnswers / quizzObj.questions.length)*100;
+    let roundedCorrectAnswersPercentage = Math.round(correctAnswersPercentage);
+    
+    for(let i = 0; i < quizzLevels.length; i++) {
+        if(correctAnswersPercentage >= quizzLevels[i].minValue) {
+            document.querySelector('.level-area').innerHTML = 
+            `
+            <div class="level">
+                <div class="header">
+                    ${roundedCorrectAnswersPercentage}% de acerto: ${quizzLevels[i].title}
+                </div>
+    
+                <div class="options">
+                    <div class="level-container" style="background-image: url(${quizzLevels[i].image});">
+                    </div>
+                    <p>${quizzLevels[i].text}</p>
+                </div>
+            </div>
+            `;
+        }
+    };
+};
+
 function comparador() { 
 	return Math.random() - 0.5; 
-}
+};
 
 
 function changeScreen(hide, show) {
@@ -130,42 +222,7 @@ function changeScreen(hide, show) {
     selectAnswer();
 };
 
-function selectAnswer() {
-    for(let i = 0; i < quizzObj.questions.length; i++) {
-        let allAnswersToSingleQuestion = Array.from(document.querySelectorAll(`.questions-area .question:nth-child(${i+1}) .options .option`));
-    
-        allAnswersToSingleQuestion.forEach(element=>{
-            element.addEventListener("click", () =>{
-                if(!(element.classList.contains('full-opacity') || element.classList.contains('mid-opacity'))){
-                    element.classList.add('full-opacity');
-                    goToNextQuestion(i);
-
-                    allAnswersToSingleQuestion.forEach(item=>{
-                        if(!(item.classList.contains('full-opacity'))) {
-                            item.classList.add('mid-opacity');
-                        };
-                    });
-                } else {
-                    console.log('você já escolheu uma resposta');
-                };
-
-                allAnswersToSingleQuestion.forEach(checkAnswer =>{
-                    if(checkAnswer.getAttribute("is-correct") === 'true'){
-                        checkAnswer.classList.add('right-answer');
-                    } else {
-                        checkAnswer.classList.add('wrong-answer');
-                    };
-                });
-
-            });
-        });
-    };
-};
 
 
 
-function goToNextQuestion(i) {
-    setTimeout(() => {
-        document.querySelector(`.questions-area .question:nth-child(${i+2})`).scrollIntoView({block: "center", behavior: "smooth"});
-    }, 2000);
-}
+

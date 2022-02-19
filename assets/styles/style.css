@@ -182,7 +182,8 @@ header h1 {
 }
 
 
-.quizz-screen .questions-area {
+.quizz-screen .questions-area, 
+.quizz-screen .level-area {
     margin-top: 24px;
     width: 100%;
 }
@@ -232,6 +233,42 @@ header h1 {
     font-size: 15px;
     font-weight: 700;
     text-align: left;
+}
+
+.level {
+    margin-bottom: 50px;
+}
+
+.level .header {
+    width: 100%;
+    height: 99px;
+    margin-bottom: 9px;
+    background-color: var(--headers-and-buttons);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--white-font);
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.level-container {
+    width: 340px;
+    height: 255px;
+    margin-bottom: 14px;
+    background-image: url(https://http.cat/411.jpg);
+    background-size: cover;
+    background-position: center;
+    border-radius: 5px;
+}
+
+
+.level p {
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--black-font);
+    line-height: 19.92px;
 }
 
 
