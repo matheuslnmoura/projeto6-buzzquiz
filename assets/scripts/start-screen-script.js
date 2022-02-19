@@ -115,6 +115,15 @@ function startQuizz(quizzId) {
     quizzIdentification = quizzId
 };
 
+function startQuizzCreated(quizzId) {
+    let getQuizz = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${quizzId}`);
+    getQuizz.then(createQuizz);
+    document.querySelector(".site-container").classList.remove("hidden");
+    document.querySelector(".quizz-creation").classList.add("hidden");
+    document.querySelector(".basic-info").classList.remove("hidden");
+    document.querySelector(".creation-success").classList.add("hidden");
+};
+
 function createQuizz(response) {
     quizzObj = response.data;
 
