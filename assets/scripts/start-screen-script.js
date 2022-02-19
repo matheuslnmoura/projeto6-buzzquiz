@@ -158,16 +158,16 @@ function selectAnswer() {
 };
 
 function goToNext(i) {
-    if(document.querySelector(`.questions-area .question:nth-child(${i+2})`) !== null){
-        // document.querySelector(`.questions-area .question:nth-child(${i+2})`).classList.toggle('hidden');
-        setTimeout(() => {
-            document.querySelector(`.questions-area .question:nth-child(${i+2})`).scrollIntoView({block: "center", behavior: "smooth"});
-        }, 2000);
-    } else if (correctAnswers + wrongAnswers === quizzObj.questions.length) {
+    if(correctAnswers + wrongAnswers === quizzObj.questions.length) {
         getLevels();
         setTimeout(() => {
             console.log('cabou as perguntas porra');
             document.querySelector(`.level`).scrollIntoView({block: "center", behavior: "smooth"});
+        }, 2000);
+    } else if(document.querySelector(`.questions-area .question:nth-child(${i+2})`) !== null){
+        // document.querySelector(`.questions-area .question:nth-child(${i+2})`).classList.toggle('hidden');
+        setTimeout(() => {
+            document.querySelector(`.questions-area .question:nth-child(${i+2})`).scrollIntoView({block: "center", behavior: "smooth"});
         }, 2000);
     } else {
         setTimeout(() => {
