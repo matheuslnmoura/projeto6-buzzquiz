@@ -9,12 +9,15 @@ let quizz = {
     image: "",
     questions: questions,
     levels: levels
-}
+};
 
-let Ids = [];
+let userQuizz;
 
-let userQuizzesArr = [];
-let userQuizzFromAPI = null;
+let userQuizzesObj = [];
+// let Ids = [];
+// let keys = [];
+
+
 
 function startQuizzCreation(){
     document.querySelector(".site-container").classList.add("hidden");
@@ -463,6 +466,78 @@ function validateLevels(){
     }
 }
 
+function testQuizz() {
+    quizz = {
+        title: "Título do quizz",
+        image: "https://http.cat/411.jpg",
+        questions: [
+            {
+                title: "Título da pergunta 1",
+                color: "#123456",
+                answers: [
+                    {
+                        text: "Texto da resposta 1",
+                        image: "https://http.cat/411.jpg",
+                        isCorrectAnswer: true
+                    },
+                    {
+                        text: "Texto da resposta 2",
+                        image: "https://http.cat/412.jpg",
+                        isCorrectAnswer: false
+                    }
+                ]
+            },
+            {
+                title: "Título da pergunta 2",
+                color: "#123456",
+                answers: [
+                    {
+                        text: "Texto da resposta 1",
+                        image: "https://http.cat/411.jpg",
+                        isCorrectAnswer: true
+                    },
+                    {
+                        text: "Texto da resposta 2",
+                        image: "https://http.cat/412.jpg",
+                        isCorrectAnswer: false
+                    }
+                ]
+            },
+            {
+                title: "Título da pergunta 3",
+                color: "#123456",
+                answers: [
+                    {
+                        text: "Texto da resposta 1",
+                        image: "https://http.cat/411.jpg",
+                        isCorrectAnswer: true
+                    },
+                    {
+                        text: "Texto da resposta 2",
+                        image: "https://http.cat/412.jpg",
+                        isCorrectAnswer: false
+                    }
+                ]
+            }
+        ],
+        levels: [
+            {
+                title: "Título do nível 1",
+                image: "https://http.cat/411.jpg",
+                text: "Descrição do nível 1",
+                minValue: 0
+            },
+            {
+                title: "Título do nível 2",
+                image: "https://http.cat/412.jpg",
+                text: "Descrição do nível 2",
+                minValue: 50
+            }
+        ]
+    };
+    sendQuizzToServerAPI();
+}
+
 function sendQuizzToServerAPI(){
     const requisition = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes", quizz);
     requisition.then(finalizeQuizzCreation);
@@ -487,33 +562,19 @@ function finalizeQuizzCreation(response){
     document.querySelector(".levels-info").classList.add("hidden");
     creationSuccessScreen.classList.remove("hidden");
     creationSuccessScreen.scrollIntoView();
-    console.log(response.data);
     localStoreQuizz(response);
 }
 
 function localStoreQuizz(response){
-    userQuizzFromAPI = (response.data);
-    userQuizzesArr.push(userQuizzFromAPI);
-    const quizzId = response.data.id;
-    
+    userQuizz = response.data;
 
-    if(localStorage.getItem("QuizzIDs") != null){        
-        const idsAPIDeserialized = JSON.parse(localStorage.getItem("QuizzIDs"));
-        if(!Array.isArray(idsAPIDeserialized)){
-            Ids.push(idsAPIDeserialized);
-        }
-        else{
-            Ids=idsAPIDeserialized;
-        }
-    }    
-
-    Ids.push(quizzId);
-    const idSerializeds = JSON.stringify(Ids); 
-    localStorage.setItem("QuizzIDs", idSerializeds);
-    localStorage.setItem("userQuizzObj", userQuizzFromAPI);
-    localStorage.setItem("userQuizzArr", userQuizzesArr);
-    console.log(quizzId);
-    console.log("ids criados" + Ids);
+    if (localStorage.getItem("userQuizz") != null) {
+        const userQuizzAPIDeserialized = JSON.parse(localStorage.getItem("userQuizz"));
+        userQuizzesObj = userQuizzAPIDeserialized;
+    };
+    userQuizzesObj.push(userQuizz);
+    const userQuizzSerializeds = JSON.stringify(userQuizzesObj); 
+    localStorage.setItem("userQuizz", userQuizzSerializeds);
 }
 
 function backHome(){
