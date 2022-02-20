@@ -95,6 +95,10 @@ header h1 {
     color: var(--black-font);
 }
 
+.all-quizzes-container h3 {
+    margin-bottom: 14px;
+}
+
 .user-quizzes .header-area {
     margin-bottom: 14px;
     display: flex;
