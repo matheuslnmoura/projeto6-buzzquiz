@@ -86,7 +86,7 @@ function changeToQuestionsScreen(){
 
     questionsScreenHTML.innerHTML = "<h3>Crie suas perguntas</h3>";
     questionsScreenHTML.innerHTML += `
-    <div class="creation-content-layout"> 
+    <div class="creation-content-layout" data-identifier="question"> 
         <div class="inputs-box">
             <h3>Pergunta 1</h3>
             <ul class="inputs-layout">
@@ -119,10 +119,10 @@ function changeToQuestionsScreen(){
     }
     for(let i = 2; i<=numberOfQuestions; i++){
         questionsScreenHTML.innerHTML += `
-        <div class="creation-content-layout "> 
+        <div class="creation-content-layout" data-identifier="question"> 
             <div class="inputs-box">
                 <h3>Pergunta ${i}</h3> 
-                <ion-icon name="create-outline" class="open-box-icon" onclick="openQuestion(${i}, this)"></ion-icon>                   
+                <ion-icon name="create-outline" class="open-box-icon" onclick="openQuestion(${i}, this)" data-identifier="expand"></ion-icon>                   
             </div>      
         </div> 
         `        
@@ -321,7 +321,7 @@ function changeToLevelsScreen(){
     <div class="creation-content-layout">
         <div class="inputs-box">
             <h3>Nível 1</h3>
-            <ul class="inputs-layout">
+            <ul class="inputs-layout" data-identifier="level">
                 <li><input type="text" placeholder="Título do nível" class="level-title1"></li>
                 <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit1"></li>
                 <li><input type="text" placeholder="URL da imagem do nível" class="url-level1"></li>
@@ -336,7 +336,7 @@ function changeToLevelsScreen(){
         <div class="creation-content-layout">
             <div class="inputs-box">
                 <h3>Nível ${i}</h3>
-                <ion-icon name="create-outline" class="open-box-icon" onclick="openLevel(${i}, this)"></ion-icon>
+                <ion-icon name="create-outline" class="open-box-icon" onclick="openLevel(${i}, this)" data-identifier="expand"></ion-icon>
             </div> 
         </div>      
         `
@@ -354,7 +354,7 @@ function openLevel(questionNumber, element){
     element.classList.add("hidden");
     const levelBox = element.parentNode.parentNode;
     element.parentNode.innerHTML += `
-    <ul class="inputs-layout">
+    <ul class="inputs-layout"  data-identifier="level">
         <li><input type="text" placeholder="Título do nível" class="level-title${questionNumber}"></li>
         <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit${questionNumber}"></li>
         <li><input type="text" placeholder="URL da imagem do nível" class="url-level${questionNumber}"></li>
