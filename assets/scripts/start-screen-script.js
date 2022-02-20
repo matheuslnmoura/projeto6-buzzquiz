@@ -6,10 +6,11 @@ let correctAnswers = 0;
 let wrongAnswers = 0;
 let quizzIdentification = null;
 let userQuizzesID = [];
+let allQuizzesIdArray = [];
 
 
 let getQuizzes = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
-getQuizzes.then(renderQuizzesList, renderUserQuizzesList);
+getQuizzes.then(renderQuizzesList, checkAPIForUserQuizzes);
 getQuizzes.catch(quizzesListError);
 
 
@@ -38,14 +39,26 @@ function renderQuizzesList(response) {
             };
         } 
     });
-    renderUserQuizzesList(response);
     allQuizzesClickEvent();
+    checkAPIForUserQuizzes(response);
 };
 
-function renderUserQuizzesList(response) {
+function checkAPIForUserQuizzes(response) {
     let quizzesObj = response.data;
+    quizzesObj.forEach(element =>{
+        allQuizzesIdArray.push(element.id);
+    });
+    userQuizzesID = JSON.parse(localStorage.getItem("QuizzIDs"));
+    userQuizzesID.forEach(item => {
+        if (allQuizzesIdArray.indexOf(item) === -1) {
+        } else{
+            renderUserQuizzesList(quizzesObj);
+        };
+    });
+} 
+
+function renderUserQuizzesList(quizzesObj) {
     if(localStorage.getItem("QuizzIDs") != null) {
-        userQuizzesID = JSON.parse(localStorage.getItem("QuizzIDs"));
         userQuizzesID.forEach(element => {
             quizzesObj.forEach(item => {
                 if(element === item.id) {
@@ -76,9 +89,10 @@ function renderUserQuizzesList(response) {
         document.querySelector('.user-quizzes').classList.remove('no-opacity');
         document.querySelector('.user-quizzes').classList.add('full-opacity');
         document.querySelector('.user-quizzes').classList.remove('hidden');
-    }; 
-    userQuizzesClickEvent();
-}
+        
+        userQuizzesClickEvent();
+    };
+};
 
 function quizzesListError(error) {
     console.log(error);

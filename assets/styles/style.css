@@ -38,6 +38,8 @@ header h1 {
     padding: 13px 0px;
 }
 
+
+
 .start-screen {
     opacity: 1;
     transition: var(--site-display-transition);
@@ -91,7 +93,23 @@ header h1 {
     font-weight: 700;
     font-size: 20px;
     color: var(--black-font);
+}
+
+.user-quizzes .header-area {
     margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-quizzes .header-area .create-quizz-icon {
+    width: 30px;
+    height: 30px;
+    background-color: var(--headers-and-buttons);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .quizz-container {

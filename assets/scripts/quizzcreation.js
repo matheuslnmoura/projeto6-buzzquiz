@@ -517,8 +517,9 @@ function localStoreQuizz(response){
 }
 
 function backHome(){
-    document.querySelector(".site-container").classList.remove("hidden");
-    document.querySelector(".quizz-creation").classList.add("hidden");
-    document.querySelector(".basic-info").classList.remove("hidden");
-    document.querySelector(".creation-success").classList.add("hidden");
+    document.location.reload();
+    // document.querySelector(".site-container").classList.remove("hidden");
+    // document.querySelector(".quizz-creation").classList.add("hidden");
+    // document.querySelector(".basic-info").classList.remove("hidden");
+    // document.querySelector(".creation-success").classList.add("hidden");
 }
