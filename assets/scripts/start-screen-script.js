@@ -10,7 +10,7 @@ let allQuizzesIdArray = [];
 
 
 let getQuizzes = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
-getQuizzes.then(renderQuizzesList, checkAPIForUserQuizzes);
+getQuizzes.then(renderQuizzesList);
 getQuizzes.catch(quizzesListError);
 
 
@@ -40,49 +40,41 @@ function renderQuizzesList(response) {
         } 
     });
     allQuizzesClickEvent();
-    checkAPIForUserQuizzes(response);
+    renderUserQuizzesList();
 };
 
-function checkAPIForUserQuizzes(response) {
-    let quizzesObj = response.data;
-    quizzesObj.forEach(element =>{
-        allQuizzesIdArray.push(element.id);
-    });
-    userQuizzesID = JSON.parse(localStorage.getItem("QuizzIDs"));
-    userQuizzesID.forEach(item => {
-        if (allQuizzesIdArray.indexOf(item) === -1) {
-        } else{
-            renderUserQuizzesList(quizzesObj);
-        };
-    });
-} 
 
-function renderUserQuizzesList(quizzesObj) {
-    if(localStorage.getItem("QuizzIDs") != null) {
-        userQuizzesID.forEach(element => {
-            quizzesObj.forEach(item => {
-                if(element === item.id) {
-                    if(isValidUrl(item.image)) {
-                        document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
-                        `
-                            <div class="quizz-container" quizz-id="${item.id}" style="background-image: url(${item.image});">
-                                <div class="backdrop">
-                                    <p>${item.title}</p>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
-                        `
-                        <div class="quizz-container" quizz-id="${item.id}" style="background-image: url(https://http.cat/404.jpg);">
-                            <div class="backdrop">
-                                <p>${item.title}</p>
-                            </div>
+
+function renderUserQuizzesList() {
+    if(localStorage.getItem("userQuizz") != null) {
+        let userQuizzesObjects = JSON.parse(localStorage.getItem("userQuizz"));
+        console.log(userQuizzesObjects)
+        userQuizzesObjects.forEach(element => {
+            if(isValidUrl(element.image)) {
+                document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
+                `
+                    <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(${element.image});">
+                        <div class="backdrop">
+                            <p>${element.title}</p>
                         </div>
-                        `;
-                    };
-                };
-            });
+                        <div class="controls ">
+                            <ion-icon name="create-outline" class="edit-button" onclick="editQuizz(this)"></ion-icon>
+                            <ion-icon name="trash-outline" class="delete-button" onclick="deleteQuizz(this)"></ion-icon>
+                        </div>
+                    </div>
+                `;
+            } else {
+                document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
+                `
+                <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(https://http.cat/404.jpg);">
+                    <div class="backdrop">
+                        <p>${element.title}</p>
+                    </div>
+                </div>
+                `;
+            };
+                
+        
         });
 
         document.querySelector('.create-quizz-container').classList.add('hidden');
@@ -116,7 +108,7 @@ function allQuizzesClickEvent() {
 function userQuizzesClickEvent() {
     userQuizzesArray = Array.from(document.querySelectorAll('.user-quizzes .api-quizzes .quizz-container'));
     userQuizzesArray.forEach(element => {
-        element.addEventListener("click", ()=>{
+        element.querySelector('.backdrop').addEventListener("click", ()=>{
             let quizzId = element.getAttribute("quizz-id");
             startQuizz(quizzId);
         })
@@ -138,8 +130,15 @@ function startQuizzCreated(quizzId) {
     document.querySelector(".creation-success").classList.add("hidden");
 };
 
+function editQuizz() {
+    console.log('clicou em editar');
+}
 
-
+function deleteQuizz(el) {
+    let quizzToBeDeleted = el.parentNode.parentNode.getAttribute('quizz-id');
+    console.log(typeof(quizzToBeDeleted));
+    // axios.delete(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${quizzToBeDeleted}`,)
+}
 
 
 
