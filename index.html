@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/styles/style.css">
+    <link rel="stylesheet" href="assets/styles/loading-icon.css">
 
 </head>
 <body>
@@ -21,9 +22,13 @@
         <h1>BUZZQUIZZ</h1>
     </header>
 
+    <div class="loading-screen">
+        <img src="assets/media/LoadingIcon.svg"/>
+        <p>Carregando</p>
+    </div>
+    
     <div class="site-container">
-
-        <div class="start-screen full-opacity">
+        <div class="start-screen full-opacity hidden">
             <div class="create-quizz-container">
                 <p>Você não criou nenhum quizz ainda :(</p>
                 <button data-identifier="create-quizz" onclick="startQuizzCreation()">Criar Quizz</button>

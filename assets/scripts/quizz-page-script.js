@@ -47,7 +47,7 @@ function getQuestions() {
             `;
         };
     };
-    changeScreen(".start-screen", ".quizz-screen");
+    changeScreen(".loading-screen", ".quizz-screen");
     selectAnswer();
 };
 

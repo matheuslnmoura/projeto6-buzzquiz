@@ -496,14 +496,9 @@ function validateLevels(isUpdate, el, id, key){
             invalidIndicationLevels(".minimum-hit", index+1, "Valor de acerto minimo precisa ser entre 0 e 100");
             console.log("Invalid min value");
         }
-        else{
-            if(element.minValue === 0){
-                hasValidLevelMin = true;                
-                console.log("Has min value = 0");
-            }
-            else{
-                invalidIndicationLevels(".minimum-hit", index+1, "É necessário pelo menos um acerto minimo igual a 0");
-            }
+        else if(element.minValue === 0){
+            hasValidLevelMin = true;                
+            console.log("Has min value = 0");
         }
         
         if(element.image == null){
@@ -524,6 +519,9 @@ function validateLevels(isUpdate, el, id, key){
     });
 
     if(!isValidLevel || !hasValidLevelMin){
+        if(!hasValidLevelMin){
+            invalidIndicationLevels(".minimum-hit", 1, "É necessário pelo menos um acerto minimo igual a 0");   
+        }
         alert("Preencha os dados corretamente");
         levels = [];
     }
@@ -555,8 +553,12 @@ function invalidIndicationLevels(element, idx, errorIndication){
 function sendQuizzToServerAPI(){
     const requisition = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes", quizz);
     requisition.then(finalizeQuizzCreation);
+    document.querySelector(".loading-screen").classList.remove("hidden");
+    document.querySelector(".levels-info").classList.add("hidden");
     requisition.catch( (error) => {  
         console.log("Falha em enviar quizz pro servidor\n" + error.data);
+        document.querySelector(".loading-screen").classList.add("hidden");
+        document.querySelector(".levels-info").classList.remove("hidden");
     })
 }
 function finalizeQuizzCreation(response){
@@ -573,7 +575,7 @@ function finalizeQuizzCreation(response){
     <span class="back-home" onclick="backHome()">Voltar pra home</span>
     `
 
-    document.querySelector(".levels-info").classList.add("hidden");
+    document.querySelector(".loading-screen").classList.add("hidden");
     creationSuccessScreen.classList.remove("hidden");
     creationSuccessScreen.scrollIntoView();
     localStoreQuizz(response);
@@ -622,8 +624,4 @@ function localStoreQuizz(response){
 
 function backHome(){
     document.location.reload();
-    // document.querySelector(".site-container").classList.remove("hidden");
-    // document.querySelector(".quizz-creation").classList.add("hidden");
-    // document.querySelector(".basic-info").classList.remove("hidden");
-    // document.querySelector(".creation-success").classList.add("hidden");
 }
