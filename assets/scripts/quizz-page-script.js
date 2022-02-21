@@ -25,7 +25,7 @@ function getQuestions() {
     for(i = 0; i < questions.length; i++) {
         document.querySelector('.questions-area').innerHTML += 
         `
-        <div class="question">
+        <div class="question" data-identifier="question">
             <div class="header" style = "background-color: ${questions[i].color}">
                 ${questions[i].title}
             </div>
@@ -40,7 +40,7 @@ function getQuestions() {
         for(let j = 0; j < scrambledAnswers.length; j++) {
             document.querySelector(`.questions-area .question:nth-child(${i+1}) .options`).innerHTML += 
             `
-            <figure class="option" is-correct = "${scrambledAnswers[j].isCorrectAnswer}">
+            <figure class="option" is-correct = "${scrambledAnswers[j].isCorrectAnswer}" data-identifier="answer">
                 <img src="${scrambledAnswers[j].image}" alt="">
                 <figcaption>${scrambledAnswers[j].text}</figcaption>
             </figure>
@@ -112,7 +112,6 @@ function goToNext(i) {
             document.querySelector(`.level`).scrollIntoView({block: "center", behavior: "smooth"});
         }, 2000);
     } else if(document.querySelector(`.questions-area .question:nth-child(${i+2})`) !== null){
-        // document.querySelector(`.questions-area .question:nth-child(${i+2})`).classList.toggle('hidden');
         setTimeout(() => {
             document.querySelector(`.questions-area .question:nth-child(${i+2})`).scrollIntoView({block: "center", behavior: "smooth"});
         }, 2000);
@@ -132,7 +131,7 @@ function getLevels() {
         if(correctAnswersPercentage >= quizzLevels[i].minValue) {
             document.querySelector('.level-area').innerHTML = 
             `
-            <div class="level">
+            <div class="level" data-identifier="quizz-result">
                 <div class="header">
                     ${roundedCorrectAnswersPercentage}% de acerto: ${quizzLevels[i].title}
                 </div>

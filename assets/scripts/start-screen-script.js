@@ -22,7 +22,7 @@ function renderQuizzesList(response) {
         if(isValidUrl(element.image)) {
             document.querySelector('.all-quizzes-container .api-quizzes').innerHTML += 
             `
-                <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(${element.image});">
+                <div data-identifier="quizz-card" class="quizz-container" quizz-id="${element.id}" style="background-image: url(${element.image});">
                     <div class="backdrop">
                         <p>${element.title}</p>
                     </div>
@@ -31,7 +31,7 @@ function renderQuizzesList(response) {
         } else {
             document.querySelector('.all-quizzes-container .api-quizzes').innerHTML += 
             `
-            <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(https://http.cat/404.jpg);">
+            <div data-identifier="quizz-card" class="quizz-container" quizz-id="${element.id}" style="background-image: url(https://http.cat/404.jpg);">
                 <div class="backdrop">
                     <p>${element.title}</p>
                 </div>
@@ -49,13 +49,12 @@ function renderQuizzesList(response) {
 function renderUserQuizzesList() {
 
     userQuizzesObjects = JSON.parse(localStorage.getItem("userQuizz"));
-    console.log(userQuizzesObjects);
     if(userQuizzesObjects.length > 0){
         userQuizzesObjects.forEach(element => {
             if(isValidUrl(element.image)) {
                 document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
                 `
-                    <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(${element.image});">
+                    <div data-identifier="quizz-card" class="quizz-container" quizz-id="${element.id}" style="background-image: url(${element.image});">
                         <div class="backdrop">
                             <p>${element.title}</p>
                         </div>
@@ -68,7 +67,7 @@ function renderUserQuizzesList() {
             } else {
                 document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
                 `
-                <div class="quizz-container" quizz-id="${element.id}" style="background-image: url(https://http.cat/404.jpg);">
+                <div data-identifier="quizz-card" class="quizz-container" quizz-id="${element.id}" style="background-image: url(https://http.cat/404.jpg);">
                     <div class="backdrop">
                         <p>${element.title}</p>
                     </div>
@@ -141,17 +140,13 @@ function deleteQuizz(el) {
         if(quizzToBeDeletedId === element.id) {
             quizzToBeDeletedKey = element.key;
             quizzToBeDeletedName = element.title;
-            console.log(quizzToBeDeletedKey);
         }
     });
 
-    console.log(quizzToBeDeletedId);
-    console.log (typeof(quizzToBeDeletedKey));
     let confirmation = confirm(`Você quer mesmo deletar o quizz ${quizzToBeDeletedName}?`);
 
     
     if (confirmation){
-        console.log ('entrou no if');
 
         let promisseDelete = axios.delete(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${quizzToBeDeletedId}`, {headers:{'Secret-Key': `${quizzToBeDeletedKey}`}});
         
@@ -179,8 +174,6 @@ function editQuizzBasicInfo(el) {
             quizzToBeEditedKey = element.key;           
         }
     });
-    console.log(quizzToBeEditedId);
-    console.log(quizzToBeEditedKey);
 
     document.querySelector('.basic-info .creation-button').innerHTML = "Prosseguir para atualizar perguntas";
     document.querySelector('.creation-button').addEventListener("click", ()=>{
@@ -239,7 +232,6 @@ function changeToNewLevelsScreen(el, id, key) {
             });
 
             levelsInputBoxes = Array.from(document.querySelectorAll(`.levels-info .inputs-box`));
-            console.log(levelsInputBoxes);
 
             levelsInputBoxes.forEach((singleLevel, j)=>{
                 singleLevel.querySelector('h3').classList.add(`iteration${j}`);

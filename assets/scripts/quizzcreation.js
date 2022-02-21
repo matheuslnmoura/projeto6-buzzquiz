@@ -530,10 +530,8 @@ function validateLevels(isUpdate, el, id, key){
     else{
         quizz.levels = levels;
         if (isUpdate === true){
-            console.log('Entrou no if e tomou o valor de update como true')
             updateQuizzOnServerAPI(el, id, key);
         } else {
-            console.log('Entrou no else e tomou o valor de update como qualquer coisa diferente de true')
             sendQuizzToServerAPI();
         }
         
@@ -552,78 +550,6 @@ function invalidIndicationLevels(element, idx, errorIndication){
             elementParent.innerHTML += `<span class="quizz-creation-invalid">${errorIndication}</span>`;
         }
     }    
-}
-
-function testQuizz() {
-    quizz = {
-        title: "Título do quizz aaaa",
-        image: "https://http.cat/411.jpg",
-        questions: [
-            {
-                title: "Título da pergunta 1",
-                color: "#123456",
-                answers: [
-                    {
-                        text: "Texto da resposta 1",
-                        image: "https://http.cat/411.jpg",
-                        isCorrectAnswer: true
-                    },
-                    {
-                        text: "Texto da resposta 2",
-                        image: "https://http.cat/412.jpg",
-                        isCorrectAnswer: false
-                    }
-                ]
-            },
-            {
-                title: "Título da pergunta 2",
-                color: "#123456",
-                answers: [
-                    {
-                        text: "Texto da resposta 1",
-                        image: "https://http.cat/411.jpg",
-                        isCorrectAnswer: true
-                    },
-                    {
-                        text: "Texto da resposta 2",
-                        image: "https://http.cat/412.jpg",
-                        isCorrectAnswer: false
-                    }
-                ]
-            },
-            {
-                title: "Título da pergunta 3",
-                color: "#123456",
-                answers: [
-                    {
-                        text: "Texto da resposta 1",
-                        image: "https://http.cat/411.jpg",
-                        isCorrectAnswer: true
-                    },
-                    {
-                        text: "Texto da resposta 2",
-                        image: "https://http.cat/412.jpg",
-                        isCorrectAnswer: false
-                    }
-                ]
-            }
-        ],
-        levels: [
-            {
-                title: "Título do nível 1",
-                image: "https://http.cat/411.jpg",
-                text: "Descrição do nível 1",
-                minValue: 0
-            },
-            {
-                title: "Título do nível 2",
-                image: "https://http.cat/412.jpg",
-                text: "Descrição do nível 2",
-                minValue: 50
-            }
-        ]
-    };
-    sendQuizzToServerAPI();
 }
 
 function sendQuizzToServerAPI(){
@@ -654,18 +580,33 @@ function finalizeQuizzCreation(response){
 }
 
 function updateQuizzOnServerAPI(el, id, key){
-    console.log(quizz);
-    console.log(id);
-    console.log(key);
+    deleteFromlocalStorage(id)
 
-    const requisition = axios.put(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`, quizz);
-    requisition.then(()=>{
-        console.log("atualizou!")
+    const requisition = axios.put(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`, quizz, {
+        headers: {"Secret-Key": key}
     });
+    requisition.then(finalizeQuizzCreation);
     requisition.catch( (error) => {  
         console.log("Falha em enviar quizz pro servidor\n" + error.data);
     });
-}
+
+
+};
+
+
+function deleteFromlocalStorage(quizzId){
+    let localStorageQuizzes = JSON.parse(localStorage.getItem("userQuizz"));
+    localStorageQuizzes.forEach(element =>{
+        if(element.id === quizzId) {
+            let quizzToBeDeletedIndex = localStorageQuizzes.indexOf(element);
+
+            localStorageQuizzes.splice(quizzToBeDeletedIndex, 1);
+        };
+        localStorage.clear();
+        let string = JSON.stringify(localStorageQuizzes);
+        localStorage.setItem("userQuizz", string);
+    });
+};
 
 function localStoreQuizz(response){
     userQuizz = response.data;

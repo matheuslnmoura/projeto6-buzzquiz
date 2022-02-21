@@ -26,22 +26,22 @@
         <div class="start-screen full-opacity">
             <div class="create-quizz-container">
                 <p>Você não criou nenhum quizz ainda :(</p>
-                <button onclick="startQuizzCreation()">Criar Quizz</button>
+                <button data-identifier="create-quizz" onclick="startQuizzCreation()">Criar Quizz</button>
             </div>
             <div class="user-quizzes no-opacity hidden">
                 <div class="header-area">
                     <h3>Seus Quizzes</h3>
-                    <div class="create-quizz-icon" onclick="startQuizzCreation()">
+                    <div data-identifier="create-quizz" class="create-quizz-icon" onclick="startQuizzCreation()">
                         <img src="assets/media/Rectangle 33.svg" alt="">
                     </div>
                 </div>
-                <div class="api-quizzes">
+                <div class="api-quizzes" data-identifier="user-quizzes">
 
                 </div>
             </div>
             <div class="all-quizzes-container">
                 <h3>Todos os Quizzes</h3>
-                <div class="api-quizzes">
+                <div class="api-quizzes" data-identifier="general-quizzes">
 
                 </div>
             </div>
@@ -57,7 +57,7 @@
 
     <div class="quizz-creation hidden">
         <div class="basic-info creation-layout">
-            <h3 onclick="testQuizz()">Comece pelo começo</h3>
+            <h3>Comece pelo começo</h3>
             <ul class="basic-info-box inputs-layout creation-content-layout">
                 <li><input type="text" placeholder="Título do seu quizz" class="quizz-title"></li>
                 <li><input type="text" placeholder="URL da imagem do seu quizz" class="quizz-img-url"></li>
