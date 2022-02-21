@@ -567,7 +567,7 @@ textarea::placeholder{
     
     .quizz-creation input{
         width: 564px;        
-        margin-left: 40px;
+        margin-left: 80px;
     }
 
     .creation-button{
@@ -581,12 +581,12 @@ textarea::placeholder{
 
     textarea{
         width: 564px;       
-        margin-left: 40px;
+        margin-left: 80px;
     }
 
 
     .invalid-input span{      
-        margin-left: 40px;
+        margin-left: 80px;
     }
     .img-creation{
         width: 500px;
