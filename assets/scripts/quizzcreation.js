@@ -43,6 +43,7 @@ function isValidUrl(url){
 // ------------------------- QUIZZ BASIC INFOS ------------------------- //
 
 function storeBasicInfos(){
+    
     numberOfLevels = document.querySelector(".quizz-nlevels").value;
     numberOfQuestions = document.querySelector(".quizz-nquestions").value;
     quizz.title = document.querySelector(".quizz-title").value;
@@ -114,8 +115,8 @@ function changeToQuestionsScreen(){
         <div class="inputs-box">
             <h3>Respostas Incorretas</h3>
             <ul class="inputs-layout">
-                <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer1"></li>
-                <li><input type="text" placeholder="URL da imagem" class="question-img-url1"></li>                    
+                <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer1 incorrect${i+1}"></li>
+                <li><input type="text" placeholder="URL da imagem" class="question-img-url1 incorrect${i+1}"></li>                    
             </ul>
         </div>
         `
@@ -138,34 +139,37 @@ function changeToQuestionsScreen(){
 }
     
 function openQuestion(questionNumber, element){
-    element.classList.add("hidden");
-    const questionBox = element.parentNode.parentNode;
-    element.parentNode.innerHTML += `
-    <ul class="inputs-layout">
-        <li><input type="text" placeholder="Texto da pergunta" class="question-text${questionNumber}"></li>
-        <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg${questionNumber}"></li>                    
-    </ul>
-    `
-    questionBox.innerHTML += `
-    <div class="inputs-box">
-        <h3>Resposta correta</h3>
+    if(element !== null) {
+        element.classList.add("hidden");
+        const questionBox = element.parentNode.parentNode;
+        element.parentNode.innerHTML += `
         <ul class="inputs-layout">
-            <li><input type="text" placeholder="Resposta correta" class="question-correct-answer${questionNumber}"></li>
-            <li><input type="text" placeholder="URL da imagem" class="question-img-url${questionNumber}"></li>                    
+            <li><input type="text" placeholder="Texto da pergunta" class="question-text${questionNumber}"></li>
+            <li><input type="text" placeholder="Cor de fundo da pergunta" class="question-color-bg${questionNumber}"></li>                    
         </ul>
-    </div>
-    `
-    for(let i = 0; i<3; i++){
+        `
         questionBox.innerHTML += `
         <div class="inputs-box">
-            <h3>Respostas Incorretas</h3>
+            <h3>Resposta correta</h3>
             <ul class="inputs-layout">
-                <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer${questionNumber}"></li>
+                <li><input type="text" placeholder="Resposta correta" class="question-correct-answer${questionNumber}"></li>
                 <li><input type="text" placeholder="URL da imagem" class="question-img-url${questionNumber}"></li>                    
             </ul>
         </div>
         `
+        for(let i = 0; i<3; i++){
+            questionBox.innerHTML += `
+            <div class="inputs-box">
+                <h3>Respostas Incorretas</h3>
+                <ul class="inputs-layout">
+                    <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer${questionNumber} incorrect${i+1}"></li>
+                    <li><input type="text" placeholder="URL da imagem" class="question-img-url${questionNumber} incorrect${i+1}"></li>                    
+                </ul>
+            </div>
+            `
+        }
     }
+
 }
 
 // ------------------------- QUIZZ QUESTIONS ------------------------- //
@@ -354,17 +358,19 @@ function changeToLevelsScreen(){
 }
 
 function openLevel(questionNumber, element){
-    element.classList.add("hidden");
-    const levelBox = element.parentNode.parentNode;
-    element.parentNode.innerHTML += `
-    <ul class="inputs-layout"  data-identifier="level">
-        <li><input type="text" placeholder="Título do nível" class="level-title${questionNumber}"></li>
-        <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit${questionNumber}"></li>
-        <li><input type="text" placeholder="URL da imagem do nível" class="url-level${questionNumber}"></li>
-        <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível" class="level-description${questionNumber}"></textarea></li>                  
-    </ul>
-    `    
-}
+    if(element !== null) {
+        element.classList.add("hidden");
+        const levelBox = element.parentNode.parentNode;
+        element.parentNode.innerHTML += `
+        <ul class="inputs-layout"  data-identifier="level">
+            <li><input type="text" placeholder="Título do nível" class="level-title${questionNumber}"></li>
+            <li><input type="text" placeholder="% de acerto mínima" class="minimum-hit${questionNumber}"></li>
+            <li><input type="text" placeholder="URL da imagem do nível" class="url-level${questionNumber}"></li>
+            <li><textarea name="Description" id="description" cols="30" rows="10" placeholder="Descrição do nível" class="level-description${questionNumber}"></textarea></li>                  
+        </ul>
+        `    
+    };
+};
 
 
 // ------------------------- QUIZZ LEVELS ------------------------- //
@@ -468,7 +474,7 @@ function validateLevels(){
 
 function testQuizz() {
     quizz = {
-        title: "Título do quizz",
+        title: "Título do quizz aaaa",
         image: "https://http.cat/411.jpg",
         questions: [
             {
