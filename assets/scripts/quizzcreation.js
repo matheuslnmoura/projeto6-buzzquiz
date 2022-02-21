@@ -407,7 +407,10 @@ function changeToLevelsScreen(){
         `
     }
 
-    levelsInfo.innerHTML += `<button type="button" class="creation-button" onclick="storeLevels()">Finalizar Quizz</button>`;
+    levelsInfo.innerHTML += `
+    <button type="button" class="creation-button" onclick="storeLevels()">Finalizar Quizz</button>
+    <button type="button" class="creation-button updade-levels hidden">Atualizar Quizz</button>
+    `;
 
 
     document.querySelector(".questions-info").classList.add("hidden");
@@ -459,7 +462,7 @@ function getLevelDescription(levelN){
 }
 
 
-function storeLevels(){
+function storeLevels(isUpdate, el, id, key){
     for(let i = 1; i <= numberOfLevels; i++){
         const obj = {
             title: getLevelTitleValue(i),
@@ -470,10 +473,10 @@ function storeLevels(){
         levels.push(obj);
     }
 
-    validateLevels();
+    validateLevels(isUpdate, el, id, key);
 }
 
-function validateLevels(){
+function validateLevels(isUpdate, el, id, key){
     isValidLevel = true;
     hasValidLevelMin = false;
 
@@ -526,9 +529,17 @@ function validateLevels(){
     }
     else{
         quizz.levels = levels;
-        sendQuizzToServerAPI();
+        if (isUpdate === true){
+            console.log('Entrou no if e tomou o valor de update como true')
+            updateQuizzOnServerAPI(el, id, key);
+        } else {
+            console.log('Entrou no else e tomou o valor de update como qualquer coisa diferente de true')
+            sendQuizzToServerAPI();
+        }
+        
     }
 }
+
 
 function invalidIndicationLevels(element, idx, errorIndication){
     const elementParent = document.querySelector(element+idx).parentNode;
@@ -640,6 +651,20 @@ function finalizeQuizzCreation(response){
     creationSuccessScreen.classList.remove("hidden");
     creationSuccessScreen.scrollIntoView();
     localStoreQuizz(response);
+}
+
+function updateQuizzOnServerAPI(el, id, key){
+    console.log(quizz);
+    console.log(id);
+    console.log(key);
+
+    const requisition = axios.put(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`, quizz);
+    requisition.then(()=>{
+        console.log("atualizou!")
+    });
+    requisition.catch( (error) => {  
+        console.log("Falha em enviar quizz pro servidor\n" + error.data);
+    });
 }
 
 function localStoreQuizz(response){
