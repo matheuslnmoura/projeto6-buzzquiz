@@ -79,11 +79,13 @@ function renderUserQuizzesList() {
         
         });
 
+        document.querySelector('.loading-screen').classList.add('hidden');
+        document.querySelector('.start-screen').classList.remove('hidden');
         document.querySelector('.create-quizz-container').classList.add('hidden');
         document.querySelector('.user-quizzes').classList.remove('no-opacity');
         document.querySelector('.user-quizzes').classList.add('full-opacity');
         document.querySelector('.user-quizzes').classList.remove('hidden');
-
+        window.scrollTo(0, 0);
         userQuizzesClickEvent();
     }
 };
@@ -119,20 +121,26 @@ function userQuizzesClickEvent() {
 
 function startQuizz(quizzId) {
     let getQuizz = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${quizzId}`);
+    document.querySelector(".start-screen").classList.add("hidden");
+    document.querySelector(".loading-screen").classList.remove("hidden");
     getQuizz.then(createQuizz);
     quizzIdentification = quizzId;
 };
 
 function startQuizzCreated(quizzId) {
     let getQuizz = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${quizzId}`);
-    getQuizz.then(createQuizz);
+    getQuizz.then(goToQuizzCreated);
+    document.querySelector(".loading-screen").classList.remove("hidden");
+};
+
+function goToQuizzCreated(response){
     document.querySelector(".site-container").classList.remove("hidden");
     document.querySelector(".quizz-creation").classList.add("hidden");
     document.querySelector(".basic-info").classList.remove("hidden");
     document.querySelector(".creation-success").classList.add("hidden");
-};
-
-
+    document.querySelector(".start-screen").classList.add("hidden");
+    createQuizz(response);
+}
 function deleteQuizz(el) {
     let quizzToBeDeletedKey = null;
     let quizzToBeDeletedName = null;
@@ -292,7 +300,7 @@ function validateNewLevels(){
     });
 
     if(!isValidLevel || !hasValidLevelMin){
-        alert("Preencha os dados corretamente");
+        // alert("Preencha os dados corretamente");
         console.log("Invalid levels");
         levels = [];
     }
@@ -306,8 +314,12 @@ function updateQuizzOnServerAPI(){
     console.log(quizz);
     const requisition = axios.put("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes", quizz);
     requisition.then(finalizeQuizzCreation);
+    document.querySelector(".loading-screen").classList.remove("hidden");
+    document.querySelector(".levels-info").classList.add("hidden");
     requisition.catch( (error) => {  
         console.log("Falha em enviar quizz pro servidor\n" + error.data);
+        document.querySelector(".levels-info").classList.remove("hidden");
+        document.querySelector(".loading-screen").classList.add("hidden");
     })
 }
 
