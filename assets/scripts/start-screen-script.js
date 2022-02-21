@@ -47,46 +47,48 @@ function renderQuizzesList(response) {
 
 
 function renderUserQuizzesList() {
-
-    userQuizzesObjects = JSON.parse(localStorage.getItem("userQuizz"));
-    if(userQuizzesObjects.length > 0){
-        userQuizzesObjects.forEach(element => {
-            if(isValidUrl(element.image)) {
-                document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
-                `
-                    <div data-identifier="quizz-card" class="quizz-container" quizz-id="${element.id}" style="background-image: url(${element.image});">
+    if (userQuizzesObjects !== null) {
+        userQuizzesObjects = JSON.parse(localStorage.getItem("userQuizz"));
+        if(userQuizzesObjects.length > 0){
+            userQuizzesObjects.forEach(element => {
+                if(isValidUrl(element.image)) {
+                    document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
+                    `
+                        <div data-identifier="quizz-card" class="quizz-container" quizz-id="${element.id}" style="background-image: url(${element.image});">
+                            <div class="backdrop">
+                                <p>${element.title}</p>
+                            </div>
+                            <div class="controls ">
+                                <ion-icon name="create-outline" class="edit-button" onclick="editQuizzBasicInfo(this)"></ion-icon>
+                                <ion-icon name="trash-outline" class="delete-button" onclick="deleteQuizz(this)"></ion-icon>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
+                    `
+                    <div data-identifier="quizz-card" class="quizz-container" quizz-id="${element.id}" style="background-image: url(https://http.cat/404.jpg);">
                         <div class="backdrop">
                             <p>${element.title}</p>
                         </div>
-                        <div class="controls ">
-                            <ion-icon name="create-outline" class="edit-button" onclick="editQuizzBasicInfo(this)"></ion-icon>
-                            <ion-icon name="trash-outline" class="delete-button" onclick="deleteQuizz(this)"></ion-icon>
-                        </div>
                     </div>
-                `;
-            } else {
-                document.querySelector('.user-quizzes .api-quizzes').innerHTML += 
-                `
-                <div data-identifier="quizz-card" class="quizz-container" quizz-id="${element.id}" style="background-image: url(https://http.cat/404.jpg);">
-                    <div class="backdrop">
-                        <p>${element.title}</p>
-                    </div>
-                </div>
-                `;
-            };
-                
-        
-        });
-
-        document.querySelector('.loading-screen').classList.add('hidden');
-        document.querySelector('.start-screen').classList.remove('hidden');
-        document.querySelector('.create-quizz-container').classList.add('hidden');
-        document.querySelector('.user-quizzes').classList.remove('no-opacity');
-        document.querySelector('.user-quizzes').classList.add('full-opacity');
-        document.querySelector('.user-quizzes').classList.remove('hidden');
-        window.scrollTo(0, 0);
-        userQuizzesClickEvent();
+                    `;
+                };
+                    
+            
+            });
+    
+            document.querySelector('.loading-screen').classList.add('hidden');
+            document.querySelector('.start-screen').classList.remove('hidden');
+            document.querySelector('.create-quizz-container').classList.add('hidden');
+            document.querySelector('.user-quizzes').classList.remove('no-opacity');
+            document.querySelector('.user-quizzes').classList.add('full-opacity');
+            document.querySelector('.user-quizzes').classList.remove('hidden');
+            window.scrollTo(0, 0);
+            userQuizzesClickEvent();
+        }
     }
+
 };
 
 function quizzesListError(error) {
