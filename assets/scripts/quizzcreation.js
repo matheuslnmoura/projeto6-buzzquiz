@@ -43,7 +43,7 @@ function isValidUrl(url){
 // ------------------------- QUIZZ BASIC INFOS ------------------------- //
 
 function storeBasicInfos(){
-    
+
     numberOfLevels = document.querySelector(".quizz-nlevels").value;
     numberOfQuestions = document.querySelector(".quizz-nquestions").value;
     quizz.title = document.querySelector(".quizz-title").value;
@@ -54,21 +54,28 @@ function storeBasicInfos(){
 
 function validateBasicInfos(){
     let isValidInfo = true;
+
+    resetInvalidWarnings();
+
     if(quizz.title.length<20 || quizz.title.length > 65){
         isValidInfo = false;
         console.log("Invalid Quizz Title");
+        invalidIndicationBasicInfo(".quizz-title", "O título não possui um tamanho apropriado");
     }
     if(!isValidUrl(quizz.image)){
         isValidInfo = false;
         console.log("Invalid Quizz Url");
+        invalidIndicationBasicInfo(".quizz-img-url", "O valor informado não é uma URL válida");
     }
     if(numberOfQuestions < 3){
         isValidInfo = false;
         console.log("Invalid Amount of Questions");
+        invalidIndicationBasicInfo(".quizz-nquestions", "O quizz deve ter no mínimo 3 perguntas");
     }
-    if(numberOfQuestions < 2){
+    if(numberOfLevels < 2){
         isValidInfo = false;
         console.log("Invalid Amount of Levels");
+        invalidIndicationBasicInfo(".quizz-nlevels", "O quizz deve ter no mínimo 2 níveis");
     }
 
     if(!isValidInfo){
@@ -85,12 +92,34 @@ function validateBasicInfos(){
     }
 }
 
+function invalidIndicationBasicInfo(element, errorIndication){
+    const elementParent = document.querySelector(element).parentNode;
+    if(!elementParent.classList.contains("invalid-input")){
+        elementParent.classList.add("invalid-input");        
+        if(elementParent.querySelector(".quizz-creation-invalid") != null){
+            elementParent.querySelector(".quizz-creation-invalid").innerHTML = `${errorIndication}`; 
+        }
+        else{
+            elementParent.innerHTML += `<span class="quizz-creation-invalid">${errorIndication}</span>`;
+        }
+    }
+}
+
+function resetInvalidWarnings(){
+    const invalidElements = document.querySelectorAll(".invalid-input");
+    invalidElements.forEach(element => {
+        element.classList.remove("invalid-input");
+        const warningText = element.querySelector(".quizz-creation-invalid");
+        warningText.innerHTML = "";
+    });
+}
+
 function changeToQuestionsScreen(){
     const questionsScreenHTML = document.querySelector(".questions-info");
 
     questionsScreenHTML.innerHTML = "<h3>Crie suas perguntas</h3>";
     questionsScreenHTML.innerHTML += `
-    <div class="creation-content-layout" data-identifier="question"> 
+    <div class="creation-content-layout question-box1" data-identifier="question"> 
         <div class="inputs-box">
             <h3>Pergunta 1</h3>
             <ul class="inputs-layout">
@@ -115,15 +144,15 @@ function changeToQuestionsScreen(){
         <div class="inputs-box">
             <h3>Respostas Incorretas</h3>
             <ul class="inputs-layout">
-                <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer1 incorrect${i+1}"></li>
-                <li><input type="text" placeholder="URL da imagem" class="question-img-url1 incorrect${i+1}"></li>                    
+                <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer1 incorrect${i}"></li>
+                <li><input type="text" placeholder="URL da imagem" class="question-img-url1 incorrecturl${i}"></li>                    
             </ul>
         </div>
         `
     }
     for(let i = 2; i<=numberOfQuestions; i++){
         questionsScreenHTML.innerHTML += `
-        <div class="creation-content-layout" data-identifier="question"> 
+        <div class="creation-content-layout question-box${i}" data-identifier="question"> 
             <div class="inputs-box">
                 <h3>Pergunta ${i}</h3> 
                 <ion-icon name="create-outline" class="open-box-icon" onclick="openQuestion(${i}, this)" data-identifier="expand"></ion-icon>                   
@@ -139,7 +168,7 @@ function changeToQuestionsScreen(){
 }
     
 function openQuestion(questionNumber, element){
-    if(element !== null) {
+    if (element !== null) {
         element.classList.add("hidden");
         const questionBox = element.parentNode.parentNode;
         element.parentNode.innerHTML += `
@@ -162,15 +191,15 @@ function openQuestion(questionNumber, element){
             <div class="inputs-box">
                 <h3>Respostas Incorretas</h3>
                 <ul class="inputs-layout">
-                    <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer${questionNumber} incorrect${i+1}"></li>
-                    <li><input type="text" placeholder="URL da imagem" class="question-img-url${questionNumber} incorrect${i+1}"></li>                    
+                    <li><input type="text" placeholder="Resposta incorreta" class="question-incorrect-answer${questionNumber} incorrect${i}"></li>
+                    <li><input type="text" placeholder="URL da imagem" class="question-img-url${questionNumber} incorrecturl${i}"></li>                    
                 </ul>
             </div>
             `
-        }
+        };
     }
 
-}
+};
 
 // ------------------------- QUIZZ QUESTIONS ------------------------- //
 
@@ -197,9 +226,7 @@ function getAnswersValues(questionN){
 
     for(let i = 0; i<4; i++){                                  
         let obj = null;
-        if(questionsCorrectsAnswers[i] !=null && questionsImgURLs[i] !=null){
-
-        }
+        
         if(i===0){ 
             if(questionsCorrectsAnswers[i] !=null && questionsImgURLs[i] !=null){
                 obj = {
@@ -237,7 +264,15 @@ function getAnswersValues(questionN){
         if(i===0){
             answers.push(obj);
         }
-        else if(obj.image!="" || obj.text!=""){
+        else if(obj.image!="" || obj.text!=""){            
+            while(answers.length != i){
+                const newObj = {
+                    text: "",
+                    image: "",
+                    isCorrectAnswer: false
+                }
+                answers.push(newObj);
+            }
             answers.push(obj);
         }
     }
@@ -261,48 +296,58 @@ function storeQuestions(){
 function validateQuestions(){
     let isValidQuestion = true;
     
-    questions.forEach((element) => {
+    resetInvalidWarnings();
+   
+
+    questions.forEach((element, index) => {
         if(element.title == null){
             isValidQuestion = false;
-            console.log("Invalid title question");
         }
         else if(element.title.length < 20){
             isValidQuestion = false;
-            console.log("Invalid title question");
+            invalidIndicationQuestions(".question-text", index+1, "O texto da pergunta possui tamanho invalido");
         }
         if(element.color == null){
             isValidQuestion = false;
-            console.log("Invalid hex color");
         }
         else if(!isHexColor(element.color)){
             isValidQuestion = false;
-            console.log("Invalid hex color");
+            invalidIndicationQuestions(".question-color-bg", index+1, "A cor de fundo da pergunta é inválida");
         }
         if(element.answers == null){
             isValidQuestion = false;
-            console.log("Invalid amount of answers");
         }
-        else if(element.answers.length<2){
-            isValidQuestion = false;
-            console.log("Invalid amount of answers");
-        }
-        else{
-            element.answers.forEach((elementAnswer) => {
+        
+        else{           
+            element.answers.forEach((elementAnswer, idx) => {
                 if(elementAnswer.text == null){
                     isValidQuestion = false;
-                    console.log("Invalid text question");
                 }
                 else if(elementAnswer.text.length===0){
-                    isValidQuestion = false;
-                    console.log("Invalid text question");
+                    if(elementAnswer.isCorrectAnswer){
+                        invalidIndicationQuestions(".question-correct-answer", index+1, "É necessário preencher o texto da resposta correta");
+                        isValidQuestion = false;
+                        if(element.answers.length<2){
+                            isValidQuestion = false;
+                            invalidIndicationQuestions(".question-incorrect-answer", index+1, "É necessário preencher pelo menos 1 resposta incorreta");
+                        }
+                    }
+                    else{
+                        isValidQuestion = false;
+                        invalidIndicationQuestions(`.question-incorrect-answer${index+1}.incorrect`, idx-1, "É necessário preencher o texto da resposta incorreta");
+                    }
                 }
                 if(elementAnswer.image == null){
                     isValidQuestion = false;
-                    console.log("Invalid url question");
                 }
                 else if(!isValidUrl(elementAnswer.image)){
+                    if(elementAnswer.isCorrectAnswer){
+                        invalidIndicationQuestions(".question-img-url", index+1, "URL da imagem inválida");
+                    }
+                    else{
+                        invalidIndicationQuestions(`.question-img-url${index+1}.incorrecturl`, idx-1, "URL da imagem inválida");
+                    }
                     isValidQuestion = false;
-                    console.log("Invalid url question");
                 }
             });
         }
@@ -317,6 +362,19 @@ function validateQuestions(){
         quizz.questions = questions;
         changeToLevelsScreen();
     }
+}
+
+function invalidIndicationQuestions(element, idx, errorIndication){
+    const elementParent = document.querySelector(element+idx).parentNode;
+    if(!elementParent.classList.contains("invalid-input")){
+        elementParent.classList.add("invalid-input");
+        if(elementParent.querySelector(".quizz-creation-invalid") != null){
+            elementParent.querySelector(".quizz-creation-invalid").innerHTML = `${errorIndication}`; 
+        }
+        else{
+            elementParent.innerHTML += `<span class="quizz-creation-invalid">${errorIndication}</span>`;
+        }
+    }    
 }
 
 function changeToLevelsScreen(){
@@ -419,57 +477,70 @@ function validateLevels(){
     isValidLevel = true;
     hasValidLevelMin = false;
 
-    levels.forEach((element) => {
+    levels.forEach((element, index) => {
         if(element.title == null){
             isValidLevel = false;
-            console.log("Invalid level title");
         }
         else if(element.title.length < 10){
             isValidLevel = false;
-            console.log("Invalid level title");
+            invalidIndicationLevels(".level-title", index+1, "Titulo precisa ter pelo menos 10 caracteres");
         }
         if(element.minValue == null){
             isValidLevel = false;
-            console.log("Invalid min value");
         }
         else if(element.minValue < 0 || element.minValue > 100){
             isValidLevel = false;
+            invalidIndicationLevels(".minimum-hit", index+1, "Valor de acerto minimo precisa ser entre 0 e 100");
             console.log("Invalid min value");
         }
         else{
             if(element.minValue === 0){
-                hasValidLevelMin = true;
+                hasValidLevelMin = true;                
                 console.log("Has min value = 0");
+            }
+            else{
+                invalidIndicationLevels(".minimum-hit", index+1, "É necessário pelo menos um acerto minimo igual a 0");
             }
         }
         
         if(element.image == null){
             isValidLevel = false;
-            console.log("Invalid url");
         }
         else if(!isValidUrl(element.image)){
             isValidLevel = false;
+            invalidIndicationLevels(".url-level", index+1, "Valor de URL inválida");
             console.log("Invalid url");
         }
         if(element.text ==null){
             isValidLevel = false;
-            console.log("Invalid description");
         }
         else if(element.text.length<30){
             isValidLevel = false;
-            console.log("Invalid description");
+            invalidIndicationLevels(".level-description", index+1, "Descrição do nível precisa ter pelo menos 30 caracteres");
         }        
     });
 
     if(!isValidLevel || !hasValidLevelMin){
         alert("Preencha os dados corretamente");
-        console.log("Invalid levels");
         levels = [];
     }
     else{
         quizz.levels = levels;
         sendQuizzToServerAPI();
     }
+}
+
+function invalidIndicationLevels(element, idx, errorIndication){
+    const elementParent = document.querySelector(element+idx).parentNode;
+    if(!elementParent.classList.contains("invalid-input")){
+        elementParent.classList.add("invalid-input");
+        if(elementParent.querySelector(".quizz-creation-invalid") != null){
+            elementParent.querySelector(".quizz-creation-invalid").innerHTML = `${errorIndication}`; 
+        }
+        else{
+            elementParent.innerHTML += `<span class="quizz-creation-invalid">${errorIndication}</span>`;
+        }
+    }    
 }
 
 function testQuizz() {

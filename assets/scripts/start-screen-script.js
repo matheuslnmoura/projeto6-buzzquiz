@@ -202,8 +202,8 @@ function editQuizzQuestions(el) {
                         document.querySelector(`.question-correct-answer${i+1}`).value = answer.text;
                         document.querySelector(`.question-img-url${i+1}`).value = answer.image;
                     } else {
-                        document.querySelector(`.question-incorrect-answer${i+1}.incorrect${j}`).value = answer.text;
-                        document.querySelector(`.question-img-url${i+1}.incorrect${j}`).value = answer.image;
+                        document.querySelector(`.question-incorrect-answer${i+1}.incorrect${j-1}`).value = answer.text;
+                        document.querySelector(`.question-img-url${i+1}.incorrecturl${j-1}`).value = answer.image;
                     }
                 });
             });
