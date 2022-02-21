@@ -173,5 +173,6 @@ function goToHome() {
         wrongAnswers = 0;
         document.querySelector('.questions-area').innerHTML = "";
         document.querySelector('.level-area').innerHTML ="";
+        document.location.reload();
     }, 1000);
 }
