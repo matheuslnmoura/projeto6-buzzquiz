@@ -456,6 +456,9 @@ header h1 {
     margin-bottom: 5px;
     background: #FFE9E9;
 }
+.invalid-input textarea{
+    background: #FFE9E9;
+}
 .quizz-creation-invalid{
     font-size: 16px;
     line-height: 19px;
@@ -565,6 +568,10 @@ textarea::placeholder{
         margin-left: 40px;
     }
 
+
+    .invalid-input span{      
+        margin-left: 40px;
+    }
     .img-creation{
         width: 500px;
         height: 266px;
